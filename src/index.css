@@ -1,3 +1,8 @@
+html {
+   --primary: #4deeea;
+}
+
 body {
    font-family: sans-serif;
+   background: url('https://picsum.photos/1920/1080');
 }

@@ -1,21 +1,23 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
 const Form = styled.form`
    display: flex;
    position: relative;
    width: 100%;
    height: 5rem;
+   z-index: 10;
 `;
 
 const Input = styled.input`
    border: none;
-   border-bottom: 2px solid #fff;
+   border-bottom: 1px solid #fff;
    height: 100%;
    flex: 0 0 100%;
    background: transparent;
    padding: 0 1.5rem;
    color: #fff;
+   font-size: 1.5rem;
 
    ::placeholder {
       color: #fff;
@@ -23,13 +25,18 @@ const Input = styled.input`
 
    :focus {
       outline: none;
+      border-bottom-color: var(--primary);
+   }
+
+   :focus::placeholder {
+      color: var(--primary);
    }
 `;
 
 const Svg = styled.svg`
    object-fit: cover;
    width: 100%;
-   fill: #fff;
+   fill: var(--primary);
 `;
 
 const Button = styled.button`

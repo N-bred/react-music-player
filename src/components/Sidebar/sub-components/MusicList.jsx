@@ -4,6 +4,7 @@ import styled from 'styled-components';
 const Container = styled.div`
    margin: 4rem 0;
    width: 100%;
+   z-index: 10;
 `;
 
 const Title = styled.h2`
@@ -22,13 +23,13 @@ const List = styled.ul`
 
 const Option = styled.a`
    text-decoration: none;
-   color: #fff;
+   color: rgba(255, 255, 255, 0.8);
    display: block;
    width: 100%;
    padding: 1rem 0;
 
    :hover {
-      color: greenyellow;
+      color: var(--primary);
    }
 `;
 
@@ -39,6 +40,11 @@ export const MusicList = () => {
 
          <List>
             <li>
+               <Option href="#">Marilyn</Option>
+               <Option href="#">Marilyn</Option>
+               <Option href="#">Marilyn</Option>
+               <Option href="#">Marilyn</Option>
+               <Option href="#">Marilyn</Option>
                <Option href="#">Marilyn</Option>
             </li>
          </List>
