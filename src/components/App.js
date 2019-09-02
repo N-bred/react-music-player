@@ -6,12 +6,13 @@ import { MediaMusic } from './MediaMusic/MediaMusic';
 import { MediaOptions } from './MediaOptions/MediaOptions';
 
 const MediaView = styled.main`
-   height: 85vh;
+   height: 90vh;
    width: 100%;
+   display: flex;
 `;
 
 const MediaPlayer = styled.div`
-   height: 15vh;
+   height: 10vh;
    width: 100%;
 `;
 
@@ -19,7 +20,7 @@ class App extends Component {
    render() {
       return (
          <>
-            <MediaView className="d-flex">
+            <MediaView>
                <Sidebar />
                <MediaMusic />
             </MediaView>
