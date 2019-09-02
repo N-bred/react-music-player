@@ -24,7 +24,7 @@ const Container = styled.div`
 const OptionsBar = styled.div`
    width: 100%;
    display: flex;
-   justify-content: center;
+   justify-content: space-around;
    align-items: center;
 `;
 
