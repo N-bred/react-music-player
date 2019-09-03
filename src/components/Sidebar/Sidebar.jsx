@@ -16,7 +16,10 @@ const SidebarComp = styled.div`
   position: relative;
   z-index: 10;
   overflow: hidden;
-
+  ::after {
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1;
+  }
   ::before,
   ::after {
     content: '';
@@ -37,10 +40,6 @@ const SidebarComp = styled.div`
     filter: blur(5px);
     -webkit-filter: blur(5px);
     z-index: 0;
-  }
-  ::after {
-    background: rgba(0, 0, 0, 0.4);
-    z-index: 1;
   }
 `;
 

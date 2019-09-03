@@ -34,8 +34,7 @@ class App extends Component {
     currentSong: Api[3],
     playing: false,
     audio: new Audio(`../Music/${Api[3].src}`),
-    percentage: 0,
-    interval: null
+    percentage: 0
   };
 
   componentDidMount() {
@@ -89,7 +88,7 @@ class App extends Component {
   };
 
   render() {
-    const { currentSong, playing, percentage } = this.state;
+    const { currentSong, playing, percentage, audio } = this.state;
     return (
       <AppContainer url={`../img/${currentSong.img}`}>
         <MediaView>
@@ -105,6 +104,8 @@ class App extends Component {
             playing={playing}
             changePlay={this.changePlay}
             durationPercent={percentage}
+            currentTime={audio.currentTime}
+            duration={audio.duration}
           />
         </MediaPlayer>
       </AppContainer>

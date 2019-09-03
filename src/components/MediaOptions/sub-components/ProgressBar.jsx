@@ -40,10 +40,16 @@ const Text = styled.p`
   z-index: 2;
 `;
 
-export const ProgressBar = ({ width }) => {
+const secToMin = s => {
+  return (s - (s %= 60)) / 60 + (9 < s ? ':' : ':0') + s;
+};
+
+export const ProgressBar = ({ width, currentTime, duration }) => {
   return (
     <Bar width={width}>
-      <Text>{width}%</Text>
+      <Text>
+        {secToMin(parseInt(currentTime))} / {secToMin(parseInt(duration || 0))}
+      </Text>
     </Bar>
   );
 };

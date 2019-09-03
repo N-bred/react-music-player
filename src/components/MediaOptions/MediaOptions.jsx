@@ -33,7 +33,13 @@ const ProgressContainer = styled.div`
   width: 100%;
 `;
 
-export const MediaOptions = ({ playing, changePlay, durationPercent }) => {
+export const MediaOptions = ({
+  playing,
+  changePlay,
+  durationPercent,
+  currentTime,
+  duration
+}) => {
   return (
     <Options>
       <Container>
@@ -53,7 +59,11 @@ export const MediaOptions = ({ playing, changePlay, durationPercent }) => {
           <ControlButton img={icons[6]} volume />
         </OptionsBar>
         <ProgressContainer>
-          <ProgressBar width={durationPercent} />
+          <ProgressBar
+            width={durationPercent}
+            currentTime={currentTime}
+            duration={duration}
+          />
         </ProgressContainer>
       </Container>
     </Options>
