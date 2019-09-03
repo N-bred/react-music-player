@@ -67,7 +67,11 @@ export const Sidebar = ({ songs, currentSong, changeSong }) => {
 
          <SearchBar handleSearch={handleSearch} />
 
-         <MusicList songs={state.songs} changeSong={changeSong} />
+         <MusicList
+            songs={state.songs}
+            changeSong={changeSong}
+            currentSong={currentSong}
+         />
       </SidebarComp>
    );
 };
