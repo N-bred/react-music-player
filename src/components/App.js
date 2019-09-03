@@ -97,12 +97,23 @@ class App extends Component {
 
    handlePrevSong = () => {
       const { id } = this.state.currentSong;
-      this.changeSong(id - 1);
+      const songsLength = Api.length;
+      if (id - 1 < 0) {
+         this.changeSong(songsLength - 1);
+      } else {
+         this.changeSong(id - 1);
+      }
    };
 
    handleNextSong = () => {
       const { id } = this.state.currentSong;
-      this.changeSong(id + 1);
+      const songsLength = Api.length;
+
+      if (id + 1 >= songsLength) {
+         this.changeSong(0);
+      } else {
+         this.changeSong(id + 1);
+      }
    };
 
    handleProgress = () => {
