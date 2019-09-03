@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { Sidebar } from './Sidebar/Sidebar';
 import { MediaMusic } from './MediaMusic/MediaMusic';
 import { MediaOptions } from './MediaOptions/MediaOptions';
 
+import Api from '../Api/api';
+
 const AppContainer = styled.div`
-  background: url('https://picsum.photos/1920/1080');
+  ${props =>
+    props.url &&
+    css`
+      background: url('${props.url}') no-repeat center;
+      background-size: cover;
+    `}
 `;
 
 const MediaView = styled.main`
@@ -21,11 +28,24 @@ const MediaPlayer = styled.div`
 `;
 
 class App extends Component {
+  state = {
+    currentSong: Api[3]
+  };
+
+  changeSong = id => {
+    this.setState(() => ({ currentSong: Api[id] }));
+  };
+
   render() {
+    const { currentSong } = this.state;
     return (
-      <AppContainer>
+      <AppContainer url={`../img/${currentSong.img}`}>
         <MediaView>
-          <Sidebar />
+          <Sidebar
+            songs={Api}
+            currentSong={currentSong}
+            changeSong={this.changeSong}
+          />
           <MediaMusic />
         </MediaView>
         <MediaPlayer>
