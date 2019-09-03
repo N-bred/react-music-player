@@ -51,14 +51,19 @@ export const Sidebar = ({ songs, currentSong, changeSong }) => {
    const handleSearch = (query = '') => {
       const oldSongs = [...state.songs];
 
+      if (query === null) {
+         setState({ songs });
+         return false;
+      }
+
       const filtered = oldSongs.filter(
-         song => song.name.includes(query) || song.artist.includes(query)
+         song =>
+            song.name.toLowerCase().includes(query.toLowerCase()) ||
+            song.artist.toLowerCase().includes(query.toLowerCase())
       );
 
       if (filtered.length) {
          setState({ songs: filtered });
-      } else {
-         setState({ songs });
       }
    };
    return (
