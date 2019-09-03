@@ -55,10 +55,17 @@ const Button = styled.button`
    }
 `;
 
-export const SearchBar = () => {
+export const SearchBar = ({ handleSearch }) => {
+   const search = e => {
+      if (e.target.value.length > 2) {
+         handleSearch(e.target.value);
+      } else {
+         handleSearch(null);
+      }
+   };
    return (
       <Form>
-         <Input type="text" placeholder="Search..."></Input>
+         <Input type="text" placeholder="Search..." onInput={search}></Input>
 
          <Button>
             <Svg

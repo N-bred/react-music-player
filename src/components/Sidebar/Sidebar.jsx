@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { SearchBar } from './sub-components/SearchBar';
 import { MusicList } from './sub-components/MusicList';
@@ -44,13 +44,30 @@ const Title = styled.h1`
 `;
 
 export const Sidebar = ({ songs, currentSong, changeSong }) => {
+   const [state, setState] = useState({
+      songs
+   });
+
+   const handleSearch = (query = '') => {
+      const oldSongs = [...state.songs];
+
+      const filtered = oldSongs.filter(
+         song => song.name.includes(query) || song.artist.includes(query)
+      );
+
+      if (filtered.length) {
+         setState({ songs: filtered });
+      } else {
+         setState({ songs });
+      }
+   };
    return (
       <SidebarComp>
          <Title>React Music Player</Title>
 
-         <SearchBar />
+         <SearchBar handleSearch={handleSearch} />
 
-         <MusicList songs={songs} changeSong={changeSong} />
+         <MusicList songs={state.songs} changeSong={changeSong} />
       </SidebarComp>
    );
 };
