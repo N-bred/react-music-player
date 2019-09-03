@@ -34,23 +34,6 @@ const ProgressContainer = styled.div`
 `;
 
 export const MediaOptions = () => {
-  const [playing, setPlaying] = useState(true);
-  const [progress, setP] = useState(0);
-
-  let num = progress;
-
-  useEffect(() => {
-    setInterval(() => {
-      setP(num++);
-    }, 1000);
-  }, []);
-
-  console.log(progress);
-
-  const handle = () => {
-    setPlaying(!playing);
-  };
-
   return (
     <Options>
       <Container>
@@ -58,11 +41,11 @@ export const MediaOptions = () => {
           <ControlButton img={icons[0]} />
           <ControlButton img={icons[1]} />
 
-          {playing ? (
-            <ControlButton img={icons[3]} action={handle} />
+          {/* {playing ? (
+            <ControlButton img={icons[3]} />
           ) : (
-            <ControlButton img={icons[2]} action={handle} />
-          )}
+            <ControlButton img={icons[2]} />
+          )} */}
 
           <ControlButton img={icons[4]} />
           <ControlButton img={icons[5]} />
@@ -70,7 +53,7 @@ export const MediaOptions = () => {
           <ControlButton img={icons[6]} volume />
         </OptionsBar>
         <ProgressContainer>
-          <ProgressBar width={progress} />
+          <ProgressBar />
         </ProgressContainer>
       </Container>
     </Options>

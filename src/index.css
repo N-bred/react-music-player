@@ -1,8 +1,17 @@
 html {
-   --primary: #4deeea;
+  --primary: #4deeea;
+  box-sizing: border-box;
+  font-size: 62.5%;
+}
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
 }
 
 body {
-   font-family: sans-serif;
-   background: url('https://picsum.photos/1920/1080');
+  font-size: 1.6rem;
+  font-family: sans-serif;
 }

@@ -5,6 +5,10 @@ import { Sidebar } from './Sidebar/Sidebar';
 import { MediaMusic } from './MediaMusic/MediaMusic';
 import { MediaOptions } from './MediaOptions/MediaOptions';
 
+const AppContainer = styled.div`
+  background: url('https://picsum.photos/1920/1080');
+`;
+
 const MediaView = styled.main`
   height: 85vh;
   width: 100%;
@@ -19,7 +23,7 @@ const MediaPlayer = styled.div`
 class App extends Component {
   render() {
     return (
-      <>
+      <AppContainer>
         <MediaView>
           <Sidebar />
           <MediaMusic />
@@ -27,7 +31,7 @@ class App extends Component {
         <MediaPlayer>
           <MediaOptions />
         </MediaPlayer>
-      </>
+      </AppContainer>
     );
   }
 }

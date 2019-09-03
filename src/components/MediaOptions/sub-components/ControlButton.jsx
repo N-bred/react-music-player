@@ -18,11 +18,11 @@ const Button = styled.button`
     svg path {
       fill: #fff !important;
     }
+  }
 
-    :hover svg,
-    :hover svg path {
-      fill: var(--primary) !important;
-    }
+  :hover .svg-button svg,
+  :hover .svg-button svg path {
+    fill: var(--primary) !important;
   }
 
   :focus {
