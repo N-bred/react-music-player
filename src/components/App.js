@@ -29,15 +29,44 @@ const MediaPlayer = styled.div`
 
 class App extends Component {
   state = {
-    currentSong: Api[3]
+    currentSong: Api[3],
+    playing: false,
+    audio: null
   };
 
+  componentDidMount() {
+    this.setState(() => ({
+      audio: new Audio(`../Music/${this.state.currentSong.src}`)
+    }));
+  }
+
   changeSong = id => {
-    this.setState(() => ({ currentSong: Api[id] }));
+    this.state.audio.pause();
+
+    this.setState(() => ({
+      currentSong: Api[id],
+      playing: false,
+      audio: new Audio(`../Music/${Api[id].src}`)
+    }));
+
+    setTimeout(() => {
+      this.setState(() => ({ playing: true }));
+      this.state.audio.play();
+    }, 100);
+  };
+
+  changePlay = () => {
+    this.setState(() => ({ playing: !this.state.playing }));
+
+    if (this.state.playing) {
+      this.state.audio.pause();
+    } else {
+      this.state.audio.play();
+    }
   };
 
   render() {
-    const { currentSong } = this.state;
+    const { currentSong, playing } = this.state;
     return (
       <AppContainer url={`../img/${currentSong.img}`}>
         <MediaView>
@@ -49,7 +78,7 @@ class App extends Component {
           <MediaMusic />
         </MediaView>
         <MediaPlayer>
-          <MediaOptions />
+          <MediaOptions playing={playing} changePlay={this.changePlay} />
         </MediaPlayer>
       </AppContainer>
     );

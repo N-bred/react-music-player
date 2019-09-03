@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 
 const makeApi = async () => {
-  fs.readdir(path.join(__dirname, 'src', 'Music'), (err, files) => {
+  fs.readdir(path.join(__dirname, 'public', 'Music'), (err, files) => {
     if (err) return err;
 
     fs.readdir(path.join(__dirname, 'public', 'img'), (err2, covers) => {
