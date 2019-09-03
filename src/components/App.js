@@ -37,6 +37,24 @@ class App extends Component {
       this.setState(() => ({
          audio: new Audio(`../Music/${this.state.currentSong.src}`)
       }));
+
+      document.addEventListener('keyup', e => {
+         e.preventDefault();
+
+         switch (e.code) {
+            case 'Space':
+               this.changePlay();
+               break;
+            case 'ArrowRight':
+               this.handleNextSong();
+               break;
+            case 'ArrowLeft':
+               this.handlePrevSong();
+               break;
+            default:
+               break;
+         }
+      });
    }
 
    componentDidUpdate(p, st) {
