@@ -38,14 +38,16 @@ export const MediaOptions = ({
    changePlay,
    durationPercent,
    currentTime,
-   duration
+   duration,
+   handlePrevSong,
+   handleNextSong
 }) => {
    return (
       <Options>
          <Container>
             <OptionsBar>
                <ControlButton img={icons[0]} />
-               <ControlButton img={icons[1]} />
+               <ControlButton img={icons[1]} action={handlePrevSong} />
 
                {playing ? (
                   <ControlButton img={icons[3]} action={changePlay} />
@@ -53,7 +55,7 @@ export const MediaOptions = ({
                   <ControlButton img={icons[2]} action={changePlay} />
                )}
 
-               <ControlButton img={icons[4]} />
+               <ControlButton img={icons[4]} action={handleNextSong} />
                <ControlButton img={icons[5]} />
 
                <ControlButton img={icons[6]} volume />

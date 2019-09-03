@@ -77,6 +77,16 @@ class App extends Component {
       });
    };
 
+   handlePrevSong = () => {
+      const { id } = this.state.currentSong;
+      this.changeSong(id - 1);
+   };
+
+   handleNextSong = () => {
+      const { id } = this.state.currentSong;
+      this.changeSong(id + 1);
+   };
+
    handleProgress = () => {
       const { audio } = this.state;
       interval = setInterval(() => {
@@ -108,6 +118,8 @@ class App extends Component {
                   durationPercent={percentage}
                   currentTime={audio.currentTime}
                   duration={audio.duration}
+                  handlePrevSong={this.handlePrevSong}
+                  handleNextSong={this.handleNextSong}
                />
             </MediaPlayer>
          </AppContainer>
