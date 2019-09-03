@@ -159,13 +159,6 @@ class App extends Component {
       this.handleProgress();
    };
 
-   handleAutoStart = () => {
-      this.state.audio.addEventListener('ended', e => {
-         console.log(e);
-         console.log('Ended');
-      });
-   };
-
    render() {
       const { currentSong, playing, percentage, audio } = this.state;
 
