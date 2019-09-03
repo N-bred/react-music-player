@@ -7,6 +7,8 @@ import { MediaOptions } from './MediaOptions/MediaOptions';
 
 import Api from '../Api/api';
 
+let interval;
+
 const AppContainer = styled.div`
   ${props =>
     props.url &&
@@ -31,7 +33,9 @@ class App extends Component {
   state = {
     currentSong: Api[3],
     playing: false,
-    audio: null
+    audio: new Audio(`../Music/${Api[3].src}`),
+    percentage: 0,
+    interval: null
   };
 
   componentDidMount() {
@@ -42,6 +46,7 @@ class App extends Component {
 
   changeSong = id => {
     this.state.audio.pause();
+    clearInterval(interval);
 
     this.setState(() => ({
       currentSong: Api[id],
@@ -50,23 +55,41 @@ class App extends Component {
     }));
 
     setTimeout(() => {
-      this.setState(() => ({ playing: true }));
       this.state.audio.play();
+      this.setState(() => ({ playing: true }));
+      if (this.state.playing) {
+        this.handleProgress();
+      }
     }, 100);
   };
 
   changePlay = () => {
-    this.setState(() => ({ playing: !this.state.playing }));
+    this.setState(oldSt => {
+      if (oldSt.playing) {
+        this.state.audio.pause();
+        clearInterval(interval);
+      } else {
+        this.state.audio.play();
+        this.handleProgress();
+      }
 
-    if (this.state.playing) {
-      this.state.audio.pause();
-    } else {
-      this.state.audio.play();
-    }
+      return { playing: !oldSt.playing };
+    });
+  };
+
+  handleProgress = () => {
+    const { audio } = this.state;
+    interval = setInterval(() => {
+      this.setState(() => {
+        return {
+          percentage: parseInt((audio.currentTime * 100) / audio.duration)
+        };
+      });
+    }, 1000);
   };
 
   render() {
-    const { currentSong, playing } = this.state;
+    const { currentSong, playing, percentage } = this.state;
     return (
       <AppContainer url={`../img/${currentSong.img}`}>
         <MediaView>
@@ -78,7 +101,11 @@ class App extends Component {
           <MediaMusic />
         </MediaView>
         <MediaPlayer>
-          <MediaOptions playing={playing} changePlay={this.changePlay} />
+          <MediaOptions
+            playing={playing}
+            changePlay={this.changePlay}
+            durationPercent={percentage}
+          />
         </MediaPlayer>
       </AppContainer>
     );
