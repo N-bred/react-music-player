@@ -55,6 +55,12 @@ class App extends Component {
                break;
          }
       });
+
+      setTimeout(() => {
+         this.state.audio.addEventListener('ended', e => {
+            this.handleNextSong();
+         });
+      }, 2000);
    }
 
    componentDidUpdate(p, st) {
@@ -66,11 +72,16 @@ class App extends Component {
       this.state.audio.pause();
       clearInterval(interval);
 
-      this.setState(() => ({
-         currentSong: Api[id],
-         playing: false,
-         audio: new Audio(`../Music/${Api[id].src}`)
-      }));
+      this.setState(oldSt => {
+         const { audio } = oldSt;
+         audio.src = `../Music/${Api[id].src}`;
+
+         return {
+            currentSong: Api[id],
+            playing: false,
+            audio
+         };
+      });
 
       setTimeout(() => {
          this.state.audio.play();
@@ -146,6 +157,13 @@ class App extends Component {
 
       this.state.audio.play();
       this.handleProgress();
+   };
+
+   handleAutoStart = () => {
+      this.state.audio.addEventListener('ended', e => {
+         console.log(e);
+         console.log('Ended');
+      });
    };
 
    render() {
