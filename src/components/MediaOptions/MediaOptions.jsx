@@ -40,7 +40,8 @@ export const MediaOptions = ({
    currentTime,
    duration,
    handlePrevSong,
-   handleNextSong
+   handleNextSong,
+   handleClickProgress
 }) => {
    return (
       <Options>
@@ -65,6 +66,7 @@ export const MediaOptions = ({
                   width={durationPercent}
                   currentTime={currentTime}
                   duration={duration}
+                  handleClickProgress={handleClickProgress}
                />
             </ProgressContainer>
          </Container>

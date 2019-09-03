@@ -39,7 +39,7 @@ class App extends Component {
       }));
    }
 
-   componentDidUpdate() {
+   componentDidUpdate(p, st) {
       document.body.style.background = `url('../img/${this.state.currentSong.img}') #131313  no-repeat center`;
       document.body.style.backgroundSize = 'cover';
    }
@@ -98,6 +98,27 @@ class App extends Component {
       }, 1000);
    };
 
+   handleClickProgress = percent => {
+      const seconds = parseInt((percent * this.state.audio.duration) / 100);
+
+      this.setCurrentTime(seconds);
+   };
+
+   setCurrentTime = sec => {
+      this.state.audio.pause();
+      clearInterval(interval);
+
+      this.setState(old => {
+         const { audio } = old;
+         audio.currentTime = sec;
+
+         return { audio };
+      });
+
+      this.state.audio.play();
+      this.handleProgress();
+   };
+
    render() {
       const { currentSong, playing, percentage, audio } = this.state;
 
@@ -120,6 +141,7 @@ class App extends Component {
                   duration={audio.duration}
                   handlePrevSong={this.handlePrevSong}
                   handleNextSong={this.handleNextSong}
+                  handleClickProgress={this.handleClickProgress}
                />
             </MediaPlayer>
          </AppContainer>
