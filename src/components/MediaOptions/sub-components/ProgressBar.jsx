@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 
 const Bar = styled.div`
@@ -23,7 +23,7 @@ const Bar = styled.div`
     position: absolute;
     top: 0;
     left: 0;
-    transition: width linear 1000ms;
+    transition: width linear 0.5s;
     height: 100%;
     background: var(--primary);
     z-index: 3;

@@ -27,9 +27,12 @@ const MediaPlayer = styled.div`
 
 export default class App extends Component {
   state = {
-    currentSong: Api[3],
+    currentSong: Api[localStorage.getItem('lastAudio')] || Api[1],
     playing: false,
-    audio: new Audio(`../Music/${Api[3].src}`),
+    audio: new Audio(
+      `../Music/${Api[localStorage.getItem('lastAudio')].src}` ||
+        `../Music/${Api[1].src}`
+    ),
     random: false,
     repeat: false,
     frequency: []
@@ -38,6 +41,7 @@ export default class App extends Component {
   componentDidMount() {
     this.setState(() => {
       const audio = new Audio(`../Music/${this.state.currentSong.src}`);
+      audio.volume = localStorage.getItem('volume') || 1;
       return { audio };
     });
     this.setCanvasColor();
@@ -83,6 +87,7 @@ export default class App extends Component {
   };
 
   setVolume = vol => {
+    localStorage.setItem('volume', vol);
     this.setState(oldSt => {
       const { audio } = oldSt;
       audio.volume = vol;
@@ -94,6 +99,8 @@ export default class App extends Component {
   changeSong = id => {
     this.state.audio.pause();
     clearInterval(interval);
+
+    localStorage.setItem('lastAudio', id);
 
     this.setState(oldSt => {
       const { audio } = oldSt;
