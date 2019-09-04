@@ -8,6 +8,8 @@ const Button = styled.button`
   background: none;
   border: none;
   cursor: pointer;
+  position: relative;
+  z-index: 5;
 
   .svg-button {
     svg {
@@ -28,6 +30,14 @@ const Button = styled.button`
   :focus {
     outline: none;
   }
+  ${props =>
+    props.active &&
+    css`
+      .svg-button svg,
+      .svg-button svg path {
+        fill: var(--primary) !important;
+      }
+    `}
 
   ${props =>
     props.volume &&
@@ -37,9 +47,13 @@ const Button = styled.button`
       top: 50%;
       transform: translateY(-50%);
     `}
+
+    .rangeslider__fill {
+    background: var(--primary) !important;
+  }
 `;
 
-export const ControlButton = ({ img, volume, action }) => {
+export const ControlButton = ({ img, volume, action, active, children }) => {
   const svg = useRef();
 
   useEffect(() => {
@@ -47,8 +61,10 @@ export const ControlButton = ({ img, volume, action }) => {
   }, [img]);
 
   return (
-    <Button volume={volume} onClick={action}>
+    <Button volume={volume} onClick={action} active={active}>
       <div className="svg-button" ref={svg}></div>
+
+      {children && children}
     </Button>
   );
 };
