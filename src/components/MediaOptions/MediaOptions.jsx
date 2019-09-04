@@ -42,7 +42,6 @@ const VolumeText = styled.p`
 export const MediaOptions = ({
   playing,
   changePlay,
-  durationPercent,
   currentTime,
   duration,
   handlePrevSong,
@@ -85,7 +84,6 @@ export const MediaOptions = ({
         </OptionsBar>
         <ProgressContainer>
           <ProgressBar
-            width={durationPercent}
             currentTime={currentTime}
             duration={duration}
             handleClickProgress={handleClickProgress}
