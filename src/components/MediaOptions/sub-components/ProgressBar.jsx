@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 
 const Bar = styled.div`
@@ -12,12 +12,12 @@ const Bar = styled.div`
    display: flex;
    justify-content: center;
    align-items: center;
-   z-index: 4;
+   z-index: 5;
    margin: 1rem 0;
    cursor: pointer;
    background: #222;
 
-   ::before {
+   ::after {
       content: '';
       display: block;
       position: absolute;
@@ -27,20 +27,18 @@ const Bar = styled.div`
       height: 100%;
       background: var(--primary);
       z-index: 3;
-      width: ${props => props.width}%;
+      width: var(--width);
       box-shadow: 0.5rem 1rem 4rem var(--primary);
    }
+`;
 
-   ::after {
-      content: '${props => props.text}';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);  
-      color: #fff;
-      width: 100%;
-      z-index: 10;
-   }
+const ProgressText = styled.p`
+   position: relative;
+   z-index: 5;
+   color: #fff;
+   pointer-events: none;
+   user-select: none;
+   mix-blend-mode: difference;
 `;
 
 const secToMin = s => {
@@ -68,15 +66,16 @@ export const ProgressBar = ({
          handleClickProgress(percentPosition);
       }
    };
+
+   useEffect(() => {
+      barRef.current.style.setProperty('--width', `${width}%`);
+   }, [width]);
+
    return (
-      <Bar
-         width={width}
-         onClick={handleClick}
-         ref={barRef}
-         id="bar"
-         text={`${secToMin(parseInt(currentTime))} / ${secToMin(
+      <Bar onClick={handleClick} ref={barRef} id="bar">
+         <ProgressText>{`${secToMin(parseInt(currentTime))} / ${secToMin(
             parseInt(duration || 0)
-         )} `}
-      />
+         )} `}</ProgressText>
+      </Bar>
    );
 };
