@@ -185,7 +185,7 @@ export default class App extends Component {
          const { audio } = old;
          audio.currentTime = sec;
 
-         return { audio };
+         return { audio, playing: true };
       });
 
       this.state.audio.play();
