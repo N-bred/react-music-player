@@ -43,6 +43,8 @@ export default class App extends Component {
          return { audio };
       });
 
+      this.setCanvasColor();
+
       document.addEventListener('keyup', e => {
          e.preventDefault();
 
@@ -106,6 +108,8 @@ export default class App extends Component {
             audio
          };
       });
+
+      this.setCanvasColor();
 
       setTimeout(() => {
          this.state.audio.play();
@@ -191,6 +195,7 @@ export default class App extends Component {
    };
 
    handleAutoPlay = () => {
+      this.setCanvasColor();
       if (this.state.repeat) {
          this.handleNextSong(true);
       } else if (this.state.random) {
@@ -198,6 +203,15 @@ export default class App extends Component {
       } else {
          this.handleNextSong();
       }
+   };
+
+   setCanvasColor = () => {
+      const randomColor = () => {
+         const randomVal = parseInt(Math.random() * 360);
+         return `hsl(${randomVal}, 60%, 70%)`;
+      };
+
+      document.documentElement.style.setProperty('--color', randomColor());
    };
 
    getFrequency = () => {

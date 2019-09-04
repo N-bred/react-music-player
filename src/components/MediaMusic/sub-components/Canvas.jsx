@@ -16,27 +16,22 @@ const CanvasStyled = styled.canvas`
    height: 100%;
 `;
 
-const randomColor = () => {
-   const randomVal = parseInt(Math.random() * 360);
-   return `hsl(${randomVal}, 80%, 90%)`;
-};
-
 export const Canvas = ({ frequency }) => {
    const canvasRef = useRef();
 
    const color = getComputedStyle(document.documentElement).getPropertyValue(
-      '--primary'
+      '--color'
    );
 
    useEffect(() => {
       const cLib = new CanvasFunctions(canvasRef.current);
       const { width, height } = canvasRef.current;
-      cLib.setColor(randomColor());
 
       const barWidth = Math.ceil(frequency.length / width);
 
       const renderBars = () => {
          cLib.clearRect(0, 0, width, height);
+         cLib.setColor(color);
 
          frequency.forEach((bit, i) => {
             cLib.drawRect(barWidth * 2 * i, height, barWidth, -bit * 1.5);
