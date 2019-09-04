@@ -25,7 +25,7 @@ const MediaPlayer = styled.div`
   width: 100%;
 `;
 
-class App extends Component {
+export default class App extends Component {
   state = {
     currentSong: Api[3],
     playing: false,
@@ -70,6 +70,23 @@ class App extends Component {
     document.body.style.background = `url('../img/${this.state.currentSong.img}') #131313  no-repeat center`;
     document.body.style.backgroundSize = 'cover';
   }
+
+  setRandom = () => {
+    this.setState(oldSt => ({ random: !oldSt.random }));
+  };
+
+  setRepeat = () => {
+    this.setState(oldSt => ({ repeat: !oldSt.repeat }));
+  };
+
+  setVolume = vol => {
+    this.setState(oldSt => {
+      const { audio } = oldSt;
+      audio.volume = vol;
+
+      return { audio };
+    });
+  };
 
   changeSong = id => {
     this.state.audio.pause();
@@ -179,23 +196,6 @@ class App extends Component {
     }
   };
 
-  setRandom = () => {
-    this.setState(oldSt => ({ random: !oldSt.random }));
-  };
-
-  setRepeat = () => {
-    this.setState(oldSt => ({ repeat: !oldSt.repeat }));
-  };
-
-  setVolume = vol => {
-    this.setState(oldSt => {
-      const { audio } = oldSt;
-      audio.volume = vol;
-
-      return { audio };
-    });
-  };
-
   render() {
     const {
       currentSong,
@@ -238,5 +238,3 @@ class App extends Component {
     );
   }
 }
-
-export default App;
