@@ -32,6 +32,10 @@ class CanvasFunctions {
    drawRect(x, y, w, h) {
       this.ctx.fillRect(x, y, w, h);
    }
+
+   clearRect(x, y, w, h) {
+      this.ctx.clearRect(x, y, w, h);
+   }
 }
 
 export { CanvasFunctions };

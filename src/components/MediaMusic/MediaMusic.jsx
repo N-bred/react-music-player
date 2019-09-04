@@ -10,10 +10,10 @@ const MusicComp = styled.div`
    align-items: center;
 `;
 
-export const MediaMusic = () => {
+export const MediaMusic = ({ frequency }) => {
    return (
       <MusicComp>
-         <Canvas />
+         <Canvas frequency={frequency} />
       </MusicComp>
    );
 };
