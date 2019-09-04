@@ -8,7 +8,6 @@ import { MediaOptions } from './MediaOptions/MediaOptions';
 import Api from '../Api/api';
 
 let interval;
-let freqInterval;
 
 const AppContainer = styled.div`
    background: transparent;
@@ -42,7 +41,6 @@ export default class App extends Component {
          const audio = new Audio(`../Music/${this.state.currentSong.src}`);
          return { audio };
       });
-
       this.setCanvasColor();
 
       document.addEventListener('keyup', e => {

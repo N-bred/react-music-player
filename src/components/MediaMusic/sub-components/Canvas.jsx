@@ -5,7 +5,7 @@ import { CanvasFunctions } from './CanvasFunctions';
 
 const CanvasContainer = styled.div`
    width: 90%;
-   height: 50%;
+   height: 60%;
    background: rgba(0, 0, 0, 0.6);
    margin: 0 auto;
    padding: 2.5rem;
