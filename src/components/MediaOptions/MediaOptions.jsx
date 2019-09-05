@@ -32,11 +32,19 @@ const OptionsBar = styled.div`
 
 const ProgressContainer = styled.div`
   width: 100%;
+
+  @media screen and (max-width: 900px) {
+    width: 90%;
+  }
 `;
 
 const VolumeText = styled.p`
   color: #fff;
   margin: 1rem 0;
+
+  @media screen and (max-width: 1100px) {
+    margin: 0.5rem 0;
+  }
 `;
 
 export const MediaOptions = ({

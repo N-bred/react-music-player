@@ -27,11 +27,11 @@ const MediaPlayer = styled.div`
 
 export default class App extends Component {
   state = {
-    currentSong: Api[localStorage.getItem('lastAudio')] || Api[1],
+    currentSong: Api[localStorage.getItem('lastAudio')] || Api[2],
     playing: false,
     audio: new Audio(
       `../Music/${Api[localStorage.getItem('lastAudio')].src}` ||
-        `../Music/${Api[1].src}`
+        `../Music/${Api[2].src}`
     ),
     random: false,
     repeat: false,

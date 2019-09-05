@@ -1,18 +1,24 @@
 html {
-   --primary: #4deeea;
-   box-sizing: border-box;
-   font-size: 62.5%;
+  --primary: #4deeea;
+  box-sizing: border-box;
+  font-size: 62.5%;
 }
 *,
 *::before,
 *::after {
-   margin: 0;
-   padding: 0;
-   box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
 }
 
 body {
-   font-size: 1.6rem;
-   font-family: sans-serif;
-   overflow-x: hidden;
+  font-size: 1.6rem;
+  font-family: sans-serif;
+  overflow-x: hidden;
+}
+
+@media only screen and (max-width: 400px) {
+  html {
+    font-size: 55%;
+  }
 }
