@@ -75,7 +75,7 @@ export default class App extends Component {
       });
 
       this.getFrequency();
-    }, 2000);
+    }, 500);
   }
 
   componentDidUpdate(p, st) {
@@ -225,7 +225,7 @@ export default class App extends Component {
   setCanvasColor = () => {
     const randomColor = () => {
       const randomVal = parseInt(Math.random() * 360);
-      return `hsl(${randomVal}, 60%, 60%)`;
+      return `hsl(${randomVal}, 70%, 70%)`;
     };
 
     document.documentElement.style.setProperty('--color', randomColor());
