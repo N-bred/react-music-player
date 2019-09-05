@@ -27,15 +27,19 @@ const MediaPlayer = styled.div`
 
 export default class App extends Component {
   state = {
-    currentSong: Api[localStorage.getItem('lastAudio')] || Api[2],
+    currentSong: localStorage['lastAudio']
+      ? Api[localStorage.getItem('lastAudio')]
+      : Api[2],
     playing: false,
     audio: new Audio(
-      `../Music/${Api[localStorage.getItem('lastAudio')].src}` ||
-        `../Music/${Api[2].src}`
+      localStorage['lastAudio']
+        ? `../Music/${Api[localStorage.getItem('lastAudio')].src}`
+        : `../Music/${Api[2].src}`
     ),
     random: false,
     repeat: false,
-    frequency: []
+    frequency: [],
+    audioCtx: null
   };
 
   componentDidMount() {
@@ -44,6 +48,7 @@ export default class App extends Component {
       audio.volume = localStorage.getItem('volume') || 1;
       return { audio };
     });
+
     this.setCanvasColor();
 
     document.addEventListener('keyup', e => {
@@ -79,14 +84,17 @@ export default class App extends Component {
   }
 
   setRandom = () => {
+    this.state.context.resume();
     this.setState(oldSt => ({ random: !oldSt.random }));
   };
 
   setRepeat = () => {
+    this.state.context.resume();
     this.setState(oldSt => ({ repeat: !oldSt.repeat }));
   };
 
   setVolume = vol => {
+    this.state.context.resume();
     localStorage.setItem('volume', vol);
     this.setState(oldSt => {
       const { audio } = oldSt;
@@ -97,6 +105,7 @@ export default class App extends Component {
   };
 
   changeSong = id => {
+    this.state.context.resume();
     this.state.audio.pause();
     clearInterval(interval);
 
@@ -125,6 +134,7 @@ export default class App extends Component {
   };
 
   changePlay = () => {
+    this.state.context.resume();
     this.setState(oldSt => {
       if (oldSt.playing) {
         this.state.audio.pause();
@@ -141,6 +151,8 @@ export default class App extends Component {
   handlePrevSong = () => {
     const { id } = this.state.currentSong;
     const songsLength = Api.length;
+
+    this.state.context.resume();
     if (id - 1 < 0) {
       this.changeSong(songsLength - 1);
     } else {
@@ -151,6 +163,8 @@ export default class App extends Component {
   handleNextSong = (repeat = false, random = false) => {
     const { id } = this.state.currentSong;
     const songsLength = Api.length;
+
+    this.state.context.resume();
 
     if (repeat) {
       this.changeSong(id);
@@ -175,6 +189,7 @@ export default class App extends Component {
   };
 
   handleClickProgress = percent => {
+    this.state.context.resume();
     const seconds = parseInt((percent * this.state.audio.duration) / 100);
     this.setCurrentTime(seconds);
   };
@@ -219,6 +234,8 @@ export default class App extends Component {
   getFrequency = () => {
     const { audio } = this.state;
     const audioCtx = new AudioContext();
+
+    this.setState(() => ({ context: audioCtx }));
     const analyser = audioCtx.createAnalyser();
     const source = audioCtx.createMediaElementSource(audio);
     source.connect(analyser);
