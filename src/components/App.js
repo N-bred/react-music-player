@@ -33,8 +33,8 @@ export default class App extends Component {
     playing: false,
     audio: new Audio(
       localStorage['lastAudio']
-        ? `../Music/${Api[localStorage.getItem('lastAudio')].src}`
-        : `../Music/${Api[1].src}`
+        ? `/react-music-player/Music/${Api[localStorage.getItem('lastAudio')].src}`
+        : `/react-music-player/Music/${Api[1].src}`
     ),
     random: false,
     repeat: false,
@@ -44,7 +44,9 @@ export default class App extends Component {
 
   componentDidMount() {
     this.setState(() => {
-      const audio = new Audio(`../Music/${this.state.currentSong.src}`);
+      const audio = new Audio(
+        `/react-music-player/Music/${this.state.currentSong.src}`
+      );
       audio.volume = localStorage.getItem('volume') || 1;
       return { audio };
     });
@@ -79,7 +81,7 @@ export default class App extends Component {
   }
 
   componentDidUpdate(p, st) {
-    document.body.style.background = `url('../img/${this.state.currentSong.img}') #131313  no-repeat center`;
+    document.body.style.background = `url('/react-music-player/img/${this.state.currentSong.img}') #131313  no-repeat center`;
     document.body.style.backgroundSize = 'cover';
   }
 
@@ -113,7 +115,7 @@ export default class App extends Component {
 
     this.setState(oldSt => {
       const { audio } = oldSt;
-      audio.src = `../Music/${Api[id].src}`;
+      audio.src = `/react-music-player/Music/${Api[id].src}`;
 
       return {
         currentSong: Api[id],
@@ -262,7 +264,7 @@ export default class App extends Component {
     } = this.state;
 
     return (
-      <AppContainer url={`../img/${currentSong.img}`}>
+      <AppContainer url={`/react-music-player/img/${currentSong.img}`}>
         <MediaView>
           <Sidebar
             songs={Api}
