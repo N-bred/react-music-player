@@ -29,12 +29,12 @@ export default class App extends Component {
   state = {
     currentSong: localStorage['lastAudio']
       ? Api[localStorage.getItem('lastAudio')]
-      : Api[2],
+      : Api[1],
     playing: false,
     audio: new Audio(
       localStorage['lastAudio']
         ? `../Music/${Api[localStorage.getItem('lastAudio')].src}`
-        : `../Music/${Api[2].src}`
+        : `../Music/${Api[1].src}`
     ),
     random: false,
     repeat: false,
