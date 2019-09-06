@@ -10,287 +10,285 @@ import Api from '../Api/api';
 let interval;
 
 const AppContainer = styled.div`
-  background: transparent;
-  background-size: cover;
+   background: transparent;
+   background-size: cover;
 `;
 
 const MediaView = styled.main`
-  height: 85vh;
-  width: 100%;
-  display: flex;
+   height: 85vh;
+   width: 100%;
+   display: flex;
 `;
 
 const MediaPlayer = styled.div`
-  height: 15vh;
-  width: 100%;
+   height: 15vh;
+   width: 100%;
 `;
 
 export default class App extends Component {
-  state = {
-    currentSong: localStorage['lastAudio']
-      ? Api[localStorage.getItem('lastAudio')]
-      : Api[1],
-    playing: false,
-    audio: new Audio(
-      localStorage['lastAudio']
-        ? `/react-music-player/Music/${Api[localStorage.getItem('lastAudio')].src}`
-        : `/react-music-player/Music/${Api[1].src}`
-    ),
-    random: false,
-    repeat: false,
-    frequency: [],
-    audioCtx: null
-  };
+   state = {
+      currentSong: localStorage['lastAudio']
+         ? Api[localStorage.getItem('lastAudio')]
+         : Api[1],
+      playing: false,
+      audio: new Audio(
+         localStorage['lastAudio']
+            ? `/Music/${Api[localStorage.getItem('lastAudio')].src}`
+            : `/Music/${Api[1].src}`
+      ),
+      random: false,
+      repeat: false,
+      frequency: [],
+      audioCtx: null
+   };
 
-  componentDidMount() {
-    this.setState(() => {
-      const audio = new Audio(
-        `/react-music-player/Music/${this.state.currentSong.src}`
-      );
-      audio.volume = localStorage.getItem('volume') || 1;
-      return { audio };
-    });
-
-    this.setCanvasColor();
-
-    document.addEventListener('keyup', e => {
-      e.preventDefault();
-
-      switch (e.code) {
-        case 'Space':
-          this.changePlay();
-          break;
-        case 'ArrowRight':
-          this.handleNextSong();
-          break;
-        case 'ArrowLeft':
-          this.handlePrevSong();
-          break;
-        default:
-          break;
-      }
-    });
-
-    setTimeout(() => {
-      this.state.audio.addEventListener('ended', e => {
-        this.handleAutoPlay();
+   componentDidMount() {
+      this.setState(() => {
+         const audio = new Audio(`/Music/${this.state.currentSong.src}`);
+         audio.volume = localStorage.getItem('volume') || 1;
+         return { audio };
       });
 
-      this.getFrequency();
-    }, 500);
-  }
+      this.setCanvasColor();
 
-  componentDidUpdate(p, st) {
-    document.body.style.background = `url('/react-music-player/img/${this.state.currentSong.img}') #131313  no-repeat center`;
-    document.body.style.backgroundSize = 'cover';
-  }
+      document.addEventListener('keyup', e => {
+         e.preventDefault();
 
-  setRandom = () => {
-    this.state.context.resume();
-    this.setState(oldSt => ({ random: !oldSt.random }));
-  };
+         switch (e.code) {
+            case 'Space':
+               this.changePlay();
+               break;
+            case 'ArrowRight':
+               this.handleNextSong();
+               break;
+            case 'ArrowLeft':
+               this.handlePrevSong();
+               break;
+            default:
+               break;
+         }
+      });
 
-  setRepeat = () => {
-    this.state.context.resume();
-    this.setState(oldSt => ({ repeat: !oldSt.repeat }));
-  };
+      setTimeout(() => {
+         this.state.audio.addEventListener('ended', e => {
+            this.handleAutoPlay();
+         });
 
-  setVolume = vol => {
-    this.state.context.resume();
-    localStorage.setItem('volume', vol);
-    this.setState(oldSt => {
-      const { audio } = oldSt;
-      audio.volume = vol;
+         this.getFrequency();
+      }, 500);
+   }
 
-      return { audio };
-    });
-  };
+   componentDidUpdate() {
+      document.body.style.background = `url('/img/${this.state.currentSong.img}') #131313  no-repeat center`;
+      document.body.style.backgroundSize = 'cover';
+   }
 
-  changeSong = id => {
-    this.state.context.resume();
-    this.state.audio.pause();
-    clearInterval(interval);
+   setRandom = () => {
+      this.state.context.resume();
+      this.setState(oldSt => ({ random: !oldSt.random }));
+   };
 
-    localStorage.setItem('lastAudio', id);
+   setRepeat = () => {
+      this.state.context.resume();
+      this.setState(oldSt => ({ repeat: !oldSt.repeat }));
+   };
 
-    this.setState(oldSt => {
-      const { audio } = oldSt;
-      audio.src = `/react-music-player/Music/${Api[id].src}`;
+   setVolume = vol => {
+      this.state.context.resume();
+      localStorage.setItem('volume', vol);
+      this.setState(oldSt => {
+         const { audio } = oldSt;
+         audio.volume = vol;
 
-      return {
-        currentSong: Api[id],
-        playing: false,
-        audio
-      };
-    });
+         return { audio };
+      });
+   };
 
-    this.setCanvasColor();
+   changeSong = id => {
+      this.state.context.resume();
+      this.state.audio.pause();
+      clearInterval(interval);
 
-    setTimeout(() => {
+      localStorage.setItem('lastAudio', id);
+
+      this.setState(oldSt => {
+         const { audio } = oldSt;
+         audio.src = `/Music/${Api[id].src}`;
+
+         return {
+            currentSong: Api[id],
+            playing: false,
+            audio
+         };
+      });
+
+      this.setCanvasColor();
+
+      setTimeout(() => {
+         this.state.audio.play();
+         this.setState(() => ({ playing: true }));
+         if (this.state.playing) {
+            this.handleProgress();
+         }
+      }, 100);
+   };
+
+   changePlay = () => {
+      this.state.context.resume();
+      this.setState(oldSt => {
+         if (oldSt.playing) {
+            this.state.audio.pause();
+            clearInterval(interval);
+         } else {
+            this.state.audio.play();
+            this.handleProgress();
+         }
+
+         return { playing: !oldSt.playing };
+      });
+   };
+
+   handlePrevSong = () => {
+      const { id } = this.state.currentSong;
+      const songsLength = Api.length;
+
+      this.state.context.resume();
+      if (id - 1 < 0) {
+         this.changeSong(songsLength - 1);
+      } else {
+         this.changeSong(id - 1);
+      }
+   };
+
+   handleNextSong = (repeat = false, random = false) => {
+      const { id } = this.state.currentSong;
+      const songsLength = Api.length;
+
+      this.state.context.resume();
+
+      if (repeat) {
+         this.changeSong(id);
+      } else if (random) {
+         const randomNum = parseInt(Math.random() * songsLength - 1);
+         this.changeSong(randomNum);
+      } else {
+         if (id + 1 >= songsLength) {
+            this.changeSong(0);
+         } else {
+            this.changeSong(id + 1);
+         }
+      }
+   };
+
+   handleProgress = () => {
+      const { audio } = this.state;
+      interval = setInterval(() => {
+         const width = parseInt((audio.currentTime * 100) / audio.duration);
+         document.documentElement.style.setProperty('--width', `${width}%`);
+      }, 1000);
+   };
+
+   handleClickProgress = percent => {
+      this.state.context.resume();
+      const seconds = parseInt((percent * this.state.audio.duration) / 100);
+      this.setCurrentTime(seconds);
+   };
+
+   setCurrentTime = sec => {
+      this.state.audio.pause();
+      clearInterval(interval);
+
+      this.setState(old => {
+         const { audio } = old;
+         audio.currentTime = sec;
+         const width = parseInt((audio.currentTime * 100) / audio.duration);
+         document.documentElement.style.setProperty('--width', `${width}%`);
+
+         return { audio, playing: true };
+      });
+
       this.state.audio.play();
-      this.setState(() => ({ playing: true }));
-      if (this.state.playing) {
-        this.handleProgress();
-      }
-    }, 100);
-  };
+      this.handleProgress();
+   };
 
-  changePlay = () => {
-    this.state.context.resume();
-    this.setState(oldSt => {
-      if (oldSt.playing) {
-        this.state.audio.pause();
-        clearInterval(interval);
+   handleAutoPlay = () => {
+      this.setCanvasColor();
+      if (this.state.repeat) {
+         this.handleNextSong(true);
+      } else if (this.state.random) {
+         this.handleNextSong(false, true);
       } else {
-        this.state.audio.play();
-        this.handleProgress();
+         this.handleNextSong();
       }
+   };
 
-      return { playing: !oldSt.playing };
-    });
-  };
+   setCanvasColor = () => {
+      const randomColor = () => {
+         const randomVal = parseInt(Math.random() * 360);
+         return `hsl(${randomVal}, 60%, 70%)`;
+      };
 
-  handlePrevSong = () => {
-    const { id } = this.state.currentSong;
-    const songsLength = Api.length;
+      document.documentElement.style.setProperty('--color', randomColor());
+   };
 
-    this.state.context.resume();
-    if (id - 1 < 0) {
-      this.changeSong(songsLength - 1);
-    } else {
-      this.changeSong(id - 1);
-    }
-  };
+   getFrequency = () => {
+      const { audio } = this.state;
+      const audioCtx = new AudioContext();
 
-  handleNextSong = (repeat = false, random = false) => {
-    const { id } = this.state.currentSong;
-    const songsLength = Api.length;
+      this.setState(() => ({ context: audioCtx }));
+      const analyser = audioCtx.createAnalyser();
+      const source = audioCtx.createMediaElementSource(audio);
+      source.connect(analyser);
+      analyser.connect(audioCtx.destination);
+      const dataArray = new Uint8Array(analyser.frequencyBinCount);
 
-    this.state.context.resume();
+      const animationData = () => {
+         analyser.getByteFrequencyData(dataArray);
+         this.setState({ frequency: dataArray });
+         requestAnimationFrame(animationData);
+      };
 
-    if (repeat) {
-      this.changeSong(id);
-    } else if (random) {
-      const randomNum = parseInt(Math.random() * songsLength - 1);
-      this.changeSong(randomNum);
-    } else {
-      if (id + 1 >= songsLength) {
-        this.changeSong(0);
-      } else {
-        this.changeSong(id + 1);
-      }
-    }
-  };
+      animationData();
+   };
 
-  handleProgress = () => {
-    const { audio } = this.state;
-    interval = setInterval(() => {
-      const width = parseInt((audio.currentTime * 100) / audio.duration);
-      document.documentElement.style.setProperty('--width', `${width}%`);
-    }, 1000);
-  };
+   render() {
+      const {
+         currentSong,
+         playing,
+         audio,
+         random,
+         repeat,
+         frequency
+      } = this.state;
 
-  handleClickProgress = percent => {
-    this.state.context.resume();
-    const seconds = parseInt((percent * this.state.audio.duration) / 100);
-    this.setCurrentTime(seconds);
-  };
-
-  setCurrentTime = sec => {
-    this.state.audio.pause();
-    clearInterval(interval);
-
-    this.setState(old => {
-      const { audio } = old;
-      audio.currentTime = sec;
-      const width = parseInt((audio.currentTime * 100) / audio.duration);
-      document.documentElement.style.setProperty('--width', `${width}%`);
-
-      return { audio, playing: true };
-    });
-
-    this.state.audio.play();
-    this.handleProgress();
-  };
-
-  handleAutoPlay = () => {
-    this.setCanvasColor();
-    if (this.state.repeat) {
-      this.handleNextSong(true);
-    } else if (this.state.random) {
-      this.handleNextSong(false, true);
-    } else {
-      this.handleNextSong();
-    }
-  };
-
-  setCanvasColor = () => {
-    const randomColor = () => {
-      const randomVal = parseInt(Math.random() * 360);
-      return `hsl(${randomVal}, 70%, 70%)`;
-    };
-
-    document.documentElement.style.setProperty('--color', randomColor());
-  };
-
-  getFrequency = () => {
-    const { audio } = this.state;
-    const audioCtx = new AudioContext();
-
-    this.setState(() => ({ context: audioCtx }));
-    const analyser = audioCtx.createAnalyser();
-    const source = audioCtx.createMediaElementSource(audio);
-    source.connect(analyser);
-    analyser.connect(audioCtx.destination);
-    const dataArray = new Uint8Array(analyser.frequencyBinCount);
-
-    const animationData = () => {
-      analyser.getByteFrequencyData(dataArray);
-      this.setState({ frequency: dataArray });
-      requestAnimationFrame(animationData);
-    };
-
-    animationData();
-  };
-
-  render() {
-    const {
-      currentSong,
-      playing,
-      audio,
-      random,
-      repeat,
-      frequency
-    } = this.state;
-
-    return (
-      <AppContainer url={`/react-music-player/img/${currentSong.img}`}>
-        <MediaView>
-          <Sidebar
-            songs={Api}
-            currentSong={currentSong}
-            changeSong={this.changeSong}
-          />
-          <MediaMusic frequency={frequency} />
-        </MediaView>
-        <MediaPlayer>
-          <MediaOptions
-            playing={playing}
-            audio={audio}
-            changePlay={this.changePlay}
-            currentTime={audio.currentTime}
-            duration={audio.duration}
-            handlePrevSong={this.handlePrevSong}
-            handleNextSong={this.handleNextSong}
-            handleClickProgress={this.handleClickProgress}
-            setRandom={this.setRandom}
-            setRepeat={this.setRepeat}
-            random={random}
-            repeat={repeat}
-            setVolume={this.setVolume}
-          />
-        </MediaPlayer>
-      </AppContainer>
-    );
-  }
+      return (
+         <AppContainer url={`/react-music-player/img/${currentSong.img}`}>
+            <MediaView>
+               <Sidebar
+                  songs={Api}
+                  currentSong={currentSong}
+                  changeSong={this.changeSong}
+               />
+               <MediaMusic frequency={frequency} />
+            </MediaView>
+            <MediaPlayer>
+               <MediaOptions
+                  playing={playing}
+                  audio={audio}
+                  changePlay={this.changePlay}
+                  currentTime={audio.currentTime}
+                  duration={audio.duration}
+                  handlePrevSong={this.handlePrevSong}
+                  handleNextSong={this.handleNextSong}
+                  handleClickProgress={this.handleClickProgress}
+                  setRandom={this.setRandom}
+                  setRepeat={this.setRepeat}
+                  random={random}
+                  repeat={repeat}
+                  setVolume={this.setVolume}
+               />
+            </MediaPlayer>
+         </AppContainer>
+      );
+   }
 }
