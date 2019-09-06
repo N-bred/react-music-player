@@ -23,8 +23,7 @@ const List = styled.ul`
    overflow-y: overlay;
 
    ::-webkit-scrollbar {
-      /* width: 2rem; */
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.6);
    }
 
    ::-webkit-scrollbar-thumb {

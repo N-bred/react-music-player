@@ -37,6 +37,7 @@ const InputEl = styled.input`
    padding: 1rem 1.5rem;
    background: rgba(0, 0, 0, 0.4);
    width: 100%;
+   font-family: sans-serif;
 
    :focus {
       outline: none;

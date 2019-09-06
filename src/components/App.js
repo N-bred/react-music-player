@@ -54,6 +54,10 @@ export default class App extends Component {
       document.addEventListener('keyup', e => {
          e.preventDefault();
 
+         if (e.target !== document.body) {
+            return 0;
+         }
+
          switch (e.code) {
             case 'Space':
                this.changePlay();
