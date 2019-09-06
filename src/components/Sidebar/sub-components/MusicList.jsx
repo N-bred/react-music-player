@@ -19,6 +19,18 @@ const List = styled.ul`
    width: 100%;
    list-style: none;
    margin-top: 2.5rem;
+   height: 19rem;
+   overflow-y: overlay;
+
+   ::-webkit-scrollbar {
+      /* width: 2rem; */
+      background: rgba(0, 0, 0, 0.4);
+   }
+
+   ::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      width: 1rem;
+   }
 `;
 
 const Option = styled.a`

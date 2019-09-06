@@ -7,9 +7,9 @@ import { ControlButton } from '../MediaOptions/sub-components/ControlButton';
 import { Input } from './sub-components/Input';
 
 const SidebarComp = styled.div`
-   min-width: 30rem;
-   max-width: 30rem;
-   width: 30rem;
+   min-width: 35rem;
+   max-width: 35rem;
+   width: 35rem;
    height: 100%;
    background: transparent;
    padding: 0 1.5rem;
