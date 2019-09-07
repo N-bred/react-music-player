@@ -6,4 +6,10 @@ I'm really happy with the result, it has some bad things that i tried to solve a
 
 NOTE: Everything was built from scratch, that means no libraries! (With a little custom slider as an exception);
 
+### UPDATE: 09/07/2019
+
+New feature added, now you can upload your own songs and play them in the app, keep in mind that they will only be able in the session.
+
+Also, there were a lot of performance fixes and now the app is blazing fast!
+
 site: [React Music Player](https://n-bred.github.io/react-music-player/)
