@@ -109,7 +109,6 @@ export default class App extends Component {
     this.setState(oldSt => {
       const { audio } = oldSt;
       audio.volume = vol;
-
       return { audio };
     });
   };
@@ -235,7 +234,7 @@ export default class App extends Component {
   setCanvasColor = () => {
     const randomColor = () => {
       const randomVal = parseInt(Math.random() * 360);
-      return `hsl(${randomVal}, 60%, 70%)`;
+      return `hsl(${randomVal}, 70%, 60%)`;
     };
 
     document.documentElement.style.setProperty('--color', randomColor());

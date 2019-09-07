@@ -73,7 +73,7 @@ const Button = styled.button`
   }
 `;
 
-export const Input = memo(({ songs, addSong }) => {
+export const Input = memo(({ songs, addSong, setShowForm, goBottomOfList }) => {
   const [state, setState] = useState({
     id: null,
     songName: '',
@@ -154,6 +154,8 @@ export const Input = memo(({ songs, addSong }) => {
     });
 
     resetState();
+    setShowForm(false);
+    goBottomOfList();
   };
 
   const checkState = Object.values(state).every((st, i) => {

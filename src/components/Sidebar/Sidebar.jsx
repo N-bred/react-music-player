@@ -135,6 +135,13 @@ export const Sidebar = memo(({ songs, currentSong, changeSong, addSong }) => {
     setShowForm(!showForm);
   };
 
+  const goBottomOfList = () => {
+    const list = document.getElementById('musicList');
+    setTimeout(() => {
+      list.scrollTo(0, list.offsetHeight + 20);
+    }, 100);
+  };
+
   return (
     <SidebarComp showing={showingBar} id="sidebar">
       <ControlButton img={icons[7]} toggle={true} action={handleShowBar} />
@@ -146,7 +153,12 @@ export const Sidebar = memo(({ songs, currentSong, changeSong, addSong }) => {
       </Button>
 
       {showForm ? (
-        <Input songs={songs} addSong={addSong} />
+        <Input
+          songs={songs}
+          addSong={addSong}
+          setShowForm={setShowForm}
+          goBottomOfList={goBottomOfList}
+        />
       ) : (
         <SearchBar handleSearch={handleSearch} />
       )}
