@@ -5,7 +5,7 @@ const publicMusicRoute =
     ? '/react-music-player/Music/'
     : '/Music/';
 const publicImgRoute =
-  process.env.NODE_ENV === 'production' ? '/react-music-player/Img/' : '/Img/';
+  process.env.NODE_ENV === 'production' ? '/react-music-player/img/' : '/img/';
 
 const makeApi = async () => {
   fs.readdir(path.join(__dirname, 'public', 'Music'), (err, files) => {
