@@ -121,6 +121,8 @@ export default class App extends Component {
 
     localStorage.setItem('lastAudio', id);
 
+    this.setCanvasColor();
+
     this.setState(oldSt => {
       const { audio } = oldSt;
       audio.src = oldSt.songs[id].src;
@@ -131,8 +133,6 @@ export default class App extends Component {
         audio
       };
     });
-
-    this.setCanvasColor();
 
     setTimeout(() => {
       this.state.audio.play();
