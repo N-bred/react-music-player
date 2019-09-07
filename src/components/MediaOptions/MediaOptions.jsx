@@ -67,6 +67,7 @@ export const MediaOptions = ({
   const handleShowAudio = () => {
     setShowingAudio(!showingAudio);
   };
+
   return (
     <Options>
       <Container>

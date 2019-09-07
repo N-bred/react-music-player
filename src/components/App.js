@@ -8,6 +8,7 @@ import { MediaOptions } from './MediaOptions/MediaOptions';
 import Api from '../Api/api';
 
 let interval;
+let animationFrame;
 
 const AppContainer = styled.div`
   background: transparent;
@@ -44,15 +45,26 @@ export default class App extends Component {
     random: false,
     repeat: false,
     frequency: [],
-    audioCtx: null,
-    songs: Api
+    context: null,
+    songs: Api,
+    dataArray: [],
+    analyser: null
   };
 
   componentDidMount() {
     this.setState(() => {
       const audio = new Audio(this.state.currentSong.src);
       audio.volume = localStorage.getItem('volume') || 1;
-      return { audio };
+
+      const audioCtx = new AudioContext();
+
+      const analyser = audioCtx.createAnalyser();
+      const source = audioCtx.createMediaElementSource(audio);
+      source.connect(analyser);
+      analyser.connect(audioCtx.destination);
+      const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+      return { audio, context: audioCtx, dataArray, analyser };
     });
 
     this.setCanvasColor();
@@ -84,7 +96,15 @@ export default class App extends Component {
         this.handleAutoPlay();
       });
 
-      this.getFrequency();
+      this.state.audio.addEventListener('pause', e => {
+        setTimeout(() => {
+          cancelAnimationFrame(animationFrame);
+        }, 600);
+      });
+
+      this.state.audio.addEventListener('play', e => {
+        this.getFrequency();
+      });
     }, 500);
   }
 
@@ -92,6 +112,17 @@ export default class App extends Component {
     document.body.style.background = `url('${this.state.currentSong.img}') #131313  no-repeat center`;
     document.body.style.backgroundSize = 'cover';
   }
+
+  getFrequency = () => {
+    const { dataArray, analyser } = this.state;
+    const animationData = () => {
+      analyser.getByteFrequencyData(dataArray);
+      this.setState({ frequency: dataArray });
+      animationFrame = requestAnimationFrame(animationData);
+    };
+
+    animationData();
+  };
 
   setRandom = () => {
     this.state.context.resume();
@@ -238,26 +269,6 @@ export default class App extends Component {
     };
 
     document.documentElement.style.setProperty('--color', randomColor());
-  };
-
-  getFrequency = () => {
-    const { audio } = this.state;
-    const audioCtx = new AudioContext();
-
-    this.setState(() => ({ context: audioCtx }));
-    const analyser = audioCtx.createAnalyser();
-    const source = audioCtx.createMediaElementSource(audio);
-    source.connect(analyser);
-    analyser.connect(audioCtx.destination);
-    const dataArray = new Uint8Array(analyser.frequencyBinCount);
-
-    const animationData = () => {
-      analyser.getByteFrequencyData(dataArray);
-      this.setState({ frequency: dataArray });
-      requestAnimationFrame(animationData);
-    };
-
-    animationData();
   };
 
   addSong = obj => {

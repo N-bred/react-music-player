@@ -190,7 +190,13 @@ export const Input = memo(({ songs, addSong, setShowForm, goBottomOfList }) => {
         accept="image/*"
       />
 
-      <LabelButton htmlFor="fileSongSelector">Select a song</LabelButton>
+      <LabelButton htmlFor="fileSongSelector">
+        {state.fileSongSelector
+          ? !state.songName
+            ? 'Song Selected'
+            : state.songName
+          : 'Select a song'}
+      </LabelButton>
       <InputFile
         type="file"
         id="fileSongSelector"
