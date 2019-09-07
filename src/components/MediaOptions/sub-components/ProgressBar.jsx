@@ -38,7 +38,6 @@ const ProgressText = styled.p`
   color: #fff;
   pointer-events: none;
   user-select: none;
-  mix-blend-mode: difference;
 `;
 
 const secToMin = s => {

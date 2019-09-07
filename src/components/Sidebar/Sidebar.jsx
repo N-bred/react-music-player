@@ -137,10 +137,24 @@ export const Sidebar = memo(({ songs, currentSong, changeSong, addSong }) => {
 
   const goBottomOfList = () => {
     const list = document.getElementById('musicList');
-    setTimeout(() => {
-      list.scrollTo(0, list.offsetHeight + 20);
-    }, 100);
+
+    if (window.innerWidth >= 1000) {
+      setTimeout(() => {
+        list.scrollTo(0, list.offsetHeight + 20);
+      }, 100);
+    }
   };
+
+  const showFormOrSearchbar = showForm ? (
+    <Input
+      songs={songs}
+      addSong={addSong}
+      setShowForm={setShowForm}
+      goBottomOfList={goBottomOfList}
+    />
+  ) : (
+    <SearchBar handleSearch={handleSearch} />
+  );
 
   return (
     <SidebarComp showing={showingBar} id="sidebar">
@@ -152,22 +166,36 @@ export const Sidebar = memo(({ songs, currentSong, changeSong, addSong }) => {
         Upload Song!
       </Button>
 
-      {showForm ? (
-        <Input
-          songs={songs}
-          addSong={addSong}
-          setShowForm={setShowForm}
-          goBottomOfList={goBottomOfList}
-        />
+      {window.innerWidth <= 1000 ? (
+        showForm ? (
+          <Input
+            songs={songs}
+            addSong={addSong}
+            setShowForm={setShowForm}
+            goBottomOfList={goBottomOfList}
+          />
+        ) : (
+          <>
+            {' '}
+            <SearchBar handleSearch={handleSearch} />{' '}
+            <MusicList
+              songs={songsNew}
+              changeSong={changeSong}
+              currentSong={currentSong}
+            />{' '}
+          </>
+        )
       ) : (
-        <SearchBar handleSearch={handleSearch} />
+        showFormOrSearchbar
       )}
 
-      <MusicList
-        songs={songsNew}
-        changeSong={changeSong}
-        currentSong={currentSong}
-      />
+      {window.innerWidth >= 1000 && (
+        <MusicList
+          songs={songsNew}
+          changeSong={changeSong}
+          currentSong={currentSong}
+        />
+      )}
     </SidebarComp>
   );
 });
