@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 function ButtonSvg(props) {
   return (
-    <StyledButtonSvg onClick={props.onClick} className={props.className} rotate={props.rotate}>
+    <StyledButtonSvg onClick={props.onClick} className={props.className} rotate={props.rotate} style={props.style}>
       {props.children}
     </StyledButtonSvg>
   )

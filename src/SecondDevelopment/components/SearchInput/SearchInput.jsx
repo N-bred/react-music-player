@@ -25,6 +25,7 @@ const StyledSearchInput = styled.form`
     border-bottom: 2px solid #fff;
     flex-basis: 80%;
     padding: 1.5rem;
+    overflow: hidden;
 
     &:focus {
       outline: none;

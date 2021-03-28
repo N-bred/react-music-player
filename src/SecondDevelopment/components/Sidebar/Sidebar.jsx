@@ -84,7 +84,7 @@ const StyledSidebar = styled.div`
 
   @media only screen and (max-width: 768px) {
     transform: ${(props) => (props.isShowing ? 'translate(0,0)' : 'translate(-100%,0)')};
-    border-right: rgba(0, 0, 0, 0.5) solid 1rem;
+
     .change-button {
       opacity: 0.7;
       pointer-events: all;
@@ -94,7 +94,7 @@ const StyledSidebar = styled.div`
 
   @media only screen and (max-width: 400px) {
     .change-button {
-      right: -25%;
+      right: -30%;
     }
   }
 `

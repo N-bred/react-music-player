@@ -1,8 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Play, Repeat, Pause, Random, Previous, Next, Volume } from '../../icons'
+import { Play, Repeat, Pause, Random, Previous } from '../../icons'
 import ButtonSvg from '../ButtonSvg/ButtonSvg'
 import ProgressBar from '../ProgressBar/ProgressBar'
+import VolumeSlider from '../VolumeSlider/VolumeSlider'
 
 function MediaPlayer(props) {
   return (
@@ -27,11 +28,7 @@ function MediaPlayer(props) {
         </div>
         <ProgressBar />
       </div>
-      <div className='volume'>
-        <ButtonSvg>
-          <Volume />
-        </ButtonSvg>
-      </div>
+      <VolumeSlider className='volume'></VolumeSlider>
     </StyledMediaPlayer>
   )
 }
@@ -68,6 +65,18 @@ const StyledMediaPlayer = styled.div`
 
   .volume {
     grid-column: 3;
+  }
+
+  @media only screen and (max-width: 768px) {
+    grid-template-columns: 100%;
+
+    .controls {
+      grid-column: 1;
+    }
+
+    .volume {
+      display: none;
+    }
   }
 `
 

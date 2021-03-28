@@ -4,6 +4,7 @@
    "private": true,
    "homepage": "https://n-bred.github.io/react-music-player/",
    "dependencies": {
+      "@material-ui/core": "^4.11.3",
       "gh-pages": "^2.1.1",
       "react": "^16.9.0",
       "react-dom": "^16.9.0",
