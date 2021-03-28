@@ -49,7 +49,15 @@ function Sidebar(props) {
 const StyledSidebar = styled.div`
   width: 100%;
   background-color: rgba(0, 0, 0, 0.8);
-  position: relative;
+
+  background: rgb(0, 0, 0);
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(46, 46, 46, 0.8) 40%,
+    rgba(46, 46, 46, 0.8) 60%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
   padding: 2.5rem;
 
   h1 {

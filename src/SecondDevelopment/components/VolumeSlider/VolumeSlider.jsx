@@ -36,6 +36,7 @@ const StyledVolumeSlider = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-top: 1.5rem;
 
   .mute {
     margin-right: 1rem;
@@ -47,6 +48,7 @@ const StyledVolumeSlider = styled.div`
 
   .value {
     color: #fff;
+    padding: 1rem;
   }
 
   .slider {
