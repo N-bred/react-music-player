@@ -3,21 +3,45 @@ import styled from 'styled-components'
 import ButtonSvg from '../ButtonSvg/ButtonSvg'
 import Menu from '../../icons/Menu'
 import SearchInput from '../SearchInput/SearchInput'
+import MusicList from '../MusicList/MusicList'
+import Button from '../Button/Button'
+import UploadSongForm from '../UploadSongForm/UploadSongForm'
+
+const data = [
+  { title: 'Musica', url: 'aha', song: 'Pepe' },
+  { title: 'Musica', url: 'aha', song: 'Pepe' },
+  { title: 'Musica', url: 'aha', song: 'Pepe' },
+  { title: 'Musica', url: 'aha', song: 'Pepe' },
+  { title: 'Musica', url: 'aha', song: 'Pepe' },
+]
 
 function Sidebar(props) {
   const [isShowing, setIsShowing] = useState(false)
+  const [isInputShowing, setIsInputShowing] = useState(false)
 
-  const handleButtonClick = () => {
+  const handleShowButtonClick = () => {
     setIsShowing(!isShowing)
+  }
+  const handleInputButtonClick = () => {
+    setIsInputShowing(!isInputShowing)
   }
 
   return (
     <StyledSidebar {...props} isShowing={isShowing}>
-      <ButtonSvg className='change-button' onClick={handleButtonClick}>
+      <ButtonSvg className='change-button' onClick={handleShowButtonClick}>
         <Menu />
       </ButtonSvg>
+      <h1>React Music Player</h1>
+      <Button onClick={handleInputButtonClick}>Upload Song!</Button>
 
-      <SearchInput />
+      {isInputShowing ? (
+        <UploadSongForm />
+      ) : (
+        <div>
+          <SearchInput />
+          <MusicList list={data} />
+        </div>
+      )}
     </StyledSidebar>
   )
 }
@@ -27,6 +51,15 @@ const StyledSidebar = styled.div`
   background-color: rgba(0, 0, 0, 0.8);
   position: relative;
   padding: 2.5rem;
+
+  h1 {
+    color: #fff;
+    font-size: 2rem;
+    text-shadow: 0 0.5rem 2rem var(--primary);
+    text-transform: uppercase;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
 
   .change-button {
     opacity: 0;
