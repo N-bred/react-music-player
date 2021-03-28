@@ -75,7 +75,6 @@ const StyledSidebar = styled.div`
     top: 2.5rem;
     outline: none;
     border: none;
-    padding: 1.5rem;
 
     &:hover {
       opacity: 1;
