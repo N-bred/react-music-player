@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import Button from '../Button/Button'
 import { ACTIONS, useMusicList } from '../../context/MusicList'
 
-function UploadSongForm() {
+function UploadSongForm(props) {
   const musicList = useMusicList()
   const [name, setName] = useState('')
   const [artist, setArtist] = useState('')
@@ -64,6 +64,7 @@ function UploadSongForm() {
 
     musicList.dispatch({ type: ACTIONS.ADD_SONG, value: newSong })
     setBtnDisabled(true)
+    props.handleInputShowing()
   }
 
   return (

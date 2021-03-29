@@ -29,10 +29,9 @@ function Sidebar(props) {
       <Button onClick={handleInputButtonClick}>Upload Song!</Button>
 
       {isInputShowing ? (
-        <UploadSongForm />
+        <UploadSongForm handleInputShowing={handleInputButtonClick} />
       ) : (
         <div>
-          <SearchInput />
           <MusicList dispatcher={musicList.dispatch} list={musicList.state.API} current={musicList.state.current} />
         </div>
       )}

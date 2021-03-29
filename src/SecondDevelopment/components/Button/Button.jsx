@@ -23,7 +23,7 @@ const StyledButton = styled.button`
   transition: 0.3s ease-in;
   cursor: pointer;
 
-  :hover {
+  :hover:not(:disabled) {
     background: var(--primary);
     color: #000;
     opacity: 0.8;
@@ -35,6 +35,7 @@ const StyledButton = styled.button`
 
   :disabled {
     background: #d4d4d4;
+    color: #000;
   }
 `
 
