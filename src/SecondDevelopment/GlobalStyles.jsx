@@ -19,6 +19,19 @@ const GlobalStyles = createGlobalStyle`
         font-family: sans-serif;
     }
 
+    button {
+        background: transparent;
+        border: none;
+        outline: none;
+        cursor: pointer;
+
+        &:focus, &:active {
+            outline:none;
+        }
+
+        
+    }
+
     @media only screen and (max-width: 400px) {
         html {
             font-size: 55%;

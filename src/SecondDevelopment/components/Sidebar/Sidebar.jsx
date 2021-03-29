@@ -6,18 +6,12 @@ import SearchInput from '../SearchInput/SearchInput'
 import MusicList from '../MusicList/MusicList'
 import Button from '../Button/Button'
 import UploadSongForm from '../UploadSongForm/UploadSongForm'
-
-const data = [
-  { title: 'Musica', url: 'aha', song: 'Pepe' },
-  { title: 'Musica', url: 'aha', song: 'Pepe' },
-  { title: 'Musica', url: 'aha', song: 'Pepe' },
-  { title: 'Musica', url: 'aha', song: 'Pepe' },
-  { title: 'Musica', url: 'aha', song: 'Pepe' },
-]
+import { useMusicList } from '../../context/MusicList'
 
 function Sidebar(props) {
   const [isShowing, setIsShowing] = useState(false)
   const [isInputShowing, setIsInputShowing] = useState(false)
+  const musicList = useMusicList()
 
   const handleShowButtonClick = () => {
     setIsShowing(!isShowing)
@@ -39,7 +33,7 @@ function Sidebar(props) {
       ) : (
         <div>
           <SearchInput />
-          <MusicList list={data} />
+          <MusicList dispatcher={musicList.dispatch} list={musicList.state.API} current={musicList.state.current} />
         </div>
       )}
     </StyledSidebar>

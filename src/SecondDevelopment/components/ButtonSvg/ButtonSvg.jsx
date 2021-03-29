@@ -2,14 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 
 function ButtonSvg(props) {
-  return (
-    <StyledButtonSvg onClick={props.onClick} className={props.className} rotate={props.rotate} style={props.style}>
-      {props.children}
-    </StyledButtonSvg>
-  )
+  return <StyledButtonSvg {...props}>{props.children}</StyledButtonSvg>
 }
 
-const StyledButtonSvg = styled.button`
+const StyledButtonSvg = styled(({ rotate, isActive, ...props }) => <button {...props} />)`
   background: transparent;
   width: 100%;
   border: none;
@@ -17,7 +13,6 @@ const StyledButtonSvg = styled.button`
   height: 5rem;
   padding: 1.5rem;
   cursor: pointer;
-
   transform: ${(props) => (props.rotate ? 'rotateY(180deg)' : 'none')};
 
   &:focus {
@@ -25,7 +20,7 @@ const StyledButtonSvg = styled.button`
   }
 
   svg {
-    fill: #fff;
+    fill: ${(props) => (props.isActive ? 'var(--primary)' : '#fff')};
   }
 
   &:hover svg {

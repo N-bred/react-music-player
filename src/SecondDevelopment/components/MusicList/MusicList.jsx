@@ -1,17 +1,21 @@
 import React from 'react'
 import styled from 'styled-components'
+import MusicListItem from '../MusicListItem/MusicListItem'
+import { ACTIONS } from '../../context/MusicList'
 
 function MusicList(props) {
   return (
     <StyledMusicList>
       <h2>Available Songs</h2>
-
       <ul>
-        {props.list.map((el) => (
-          <li key={el.title}>
-            <a href={el.url}>
-              {el.title} - {el.song}
-            </a>
+        {props.list.map((el, i) => (
+          <li key={el.id}>
+            <MusicListItem
+              current={props.current === i}
+              onClick={() => props.dispatcher({ type: ACTIONS.SET_CURRENT, payload: { id: el.id } })}
+            >
+              {el.artist} - {el.name}
+            </MusicListItem>
           </li>
         ))}
       </ul>
@@ -37,17 +41,6 @@ const StyledMusicList = styled.div`
     li {
       margin: 2rem 0;
       width: 100%;
-
-      a {
-        color: rgba(255, 255, 255, 0.8);
-        width: 100%;
-        display: block;
-        text-decoration: none;
-
-        &:hover {
-          color: var(--primary);
-        }
-      }
     }
   }
 `

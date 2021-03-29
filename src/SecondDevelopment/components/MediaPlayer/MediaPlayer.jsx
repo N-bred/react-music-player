@@ -4,25 +4,31 @@ import { Play, Repeat, Pause, Random, Previous } from '../../icons'
 import ButtonSvg from '../ButtonSvg/ButtonSvg'
 import ProgressBar from '../ProgressBar/ProgressBar'
 import VolumeSlider from '../VolumeSlider/VolumeSlider'
+import { ACTIONS, useMusicList } from '../../context/MusicList'
 
 function MediaPlayer(props) {
+  const musicList = useMusicList()
+
   return (
     <StyledMediaPlayer {...props}>
       <div className='controls'>
         <div className='controls-bar'>
-          <ButtonSvg>
+          <ButtonSvg
+            onClick={() => musicList.dispatch({ type: ACTIONS.SET_RANDOM })}
+            isActive={musicList.state.isRandomized}
+          >
             <Random />
           </ButtonSvg>
-          <ButtonSvg>
+          <ButtonSvg onClick={() => musicList.dispatch({ type: ACTIONS.SET_PREVIOUS })}>
             <Previous />
           </ButtonSvg>
           <ButtonSvg>
             <Play />
           </ButtonSvg>
-          <ButtonSvg rotate>
+          <ButtonSvg rotate={true} onClick={() => musicList.dispatch({ type: ACTIONS.SET_NEXT })}>
             <Previous />
           </ButtonSvg>
-          <ButtonSvg>
+          <ButtonSvg onClick={() => musicList.dispatch({ type: ACTIONS.SET_REPEAT })} isActive={musicList.state.isRepeating}>
             <Repeat />
           </ButtonSvg>
         </div>
