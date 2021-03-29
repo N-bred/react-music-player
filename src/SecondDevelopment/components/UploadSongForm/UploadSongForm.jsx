@@ -1,26 +1,89 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Button from '../Button/Button'
+import { ACTIONS, useMusicList } from '../../context/MusicList'
 
 function UploadSongForm() {
+  const musicList = useMusicList()
+  const [name, setName] = useState('')
+  const [artist, setArtist] = useState('')
+  const [imgFile, setImgFile] = useState('')
+  const [songFile, setSongFile] = useState('')
+  const [btnDisabled, setBtnDisabled] = useState(true)
+
+  useEffect(() => {
+    setBtnDisabled(!validateInputs())
+  }, [name, artist, songFile])
+
+  const handleImgInput = (e) => {
+    const file = e.currentTarget.files[0]
+    const fileType = file.type.split('/')
+    if (fileType[0] !== 'image') {
+      alert('Only images allowed')
+      e.target.value = ''
+      return
+    }
+
+    const reader = new FileReader()
+
+    reader.addEventListener('load', (e) => {
+      setImgFile(e.target.result)
+    })
+    reader.readAsDataURL(file)
+  }
+
+  const handleFileInput = (e) => {
+    const file = e.currentTarget.files[0]
+    const fileType = file.type.split('/')
+    if (fileType[0] !== 'audio') {
+      alert('Only audios allowed')
+      e.target.value = ''
+      return
+    }
+    setSongFile(file)
+  }
+
+  const validateInputs = () => {
+    if (name === '') return false
+    if (artist === '') return false
+    if (songFile === '') return false
+    return true
+  }
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault()
+    if (!validateInputs()) return
+    if (imgFile === '') setImgFile('https://picsum.photos/1920/1080')
+
+    const newSong = {
+      name,
+      artist,
+      src: URL.createObjectURL(songFile),
+      img: imgFile,
+    }
+
+    musicList.dispatch({ type: ACTIONS.ADD_SONG, value: newSong })
+    setBtnDisabled(true)
+  }
+
   return (
-    <StyledUploadSongForm>
+    <StyledUploadSongForm onSubmit={handleFormSubmit}>
       <label htmlFor='songName'>Song Name: </label>
-      <input type='text' id='songName' />
+      <input type='text' id='songName' onChange={(e) => setName(e.target.value)} value={name} />
       <label htmlFor='artistName'>Artist Name: </label>
-      <input type='text' id='artistName' />
+      <input type='text' id='artistName' onChange={(e) => setArtist(e.target.value)} value={artist} />
       <label htmlFor='fileImgSelector' className='label-button'>
-        Select an image (Optional)
+        {imgFile === '' ? 'Select an image (Optional)' : 'Image Loaded!'}
       </label>
-      <input type='file' id='fileImgSelector' accept='image/*' />
+      <input type='file' id='fileImgSelector' accept='image/*' onChange={handleImgInput} />
 
       <label htmlFor='fileSongSelector' className='label-button'>
-        Select a song
+        {songFile === '' ? 'Select a song' : 'Song Loaded!'}
       </label>
 
-      <input type='file' id='fileSongSelector' accept='audio/*' />
+      <input type='file' id='fileSongSelector' accept='audio/*' onChange={handleFileInput} />
 
-      <Button type='submit' text>
+      <Button type='submit' disabled={btnDisabled}>
         Upload Song
       </Button>
     </StyledUploadSongForm>

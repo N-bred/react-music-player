@@ -2,7 +2,11 @@ import React from 'react'
 import styled from 'styled-components'
 
 function Button(props) {
-  return <StyledButton onClick={props.onClick}>{props.children}</StyledButton>
+  return (
+    <StyledButton disabled={props.disabled} onClick={props.onClick}>
+      {props.children}
+    </StyledButton>
+  )
 }
 
 const StyledButton = styled.button`

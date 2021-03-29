@@ -8,6 +8,7 @@ const ACTIONS = {
   SET_PREVIOUS: 'set_previous',
   SET_REPEAT: 'set_repeat',
   SET_RANDOM: 'set_random',
+  ADD_SONG: 'add_song',
 }
 
 const SET_CURRENT = (state, action) => ({
@@ -58,6 +59,13 @@ const SET_RANDOM = (state) => {
   return SET_CURRENT_INDEX({ ...state, isRandomized: true, API: random }, 0)
 }
 
+const ADD_SONG = (state, action) => {
+  const { value } = action
+  value.id = state.API.length
+  state.API.push(value)
+  return { ...state }
+}
+
 function musicListReducer(state, action) {
   switch (action.type) {
     case ACTIONS.LOG:
@@ -73,6 +81,8 @@ function musicListReducer(state, action) {
       return SET_REPEAT(state)
     case ACTIONS.SET_RANDOM:
       return SET_RANDOM(state)
+    case ACTIONS.ADD_SONG:
+      return ADD_SONG(state, action)
 
     default: {
       throw new Error(`Unhandled action type: ${action.type}`)
