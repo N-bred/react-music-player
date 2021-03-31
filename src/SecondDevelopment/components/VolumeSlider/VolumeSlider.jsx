@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Mute, HighVolume } from '../../icons'
+import { Mute, HighVolume, LowVolume } from '../../icons'
 import ButtonSvg from '../ButtonSvg/ButtonSvg'
 import Slider from '@material-ui/core/Slider'
 import { withStyles } from '@material-ui/core'
@@ -8,22 +8,25 @@ import { ACTIONS, useMediaPlayer } from '../../context/MediaPlayer'
 
 function VolumeSlider(props) {
   const mediaPlayer = useMediaPlayer()
-  const [value, setValue] = useState(mediaPlayer.state.volume * 100)
+
   const handleChange = (event, newValue) => {
-    setValue(newValue)
     mediaPlayer.dispatch({ type: ACTIONS.SET_VOLUME, payload: { volume: newValue / 100 } })
   }
   return (
     <StyledVolumeSlider className={props.className}>
-      <div className='value'>{value}%</div>
+      <div className='value'>{parseInt(mediaPlayer.state.volume * 100)}%</div>
 
       <div className='slider'>
-        <ButtonSvg style={{ padding: '.5rem' }} className='mute'>
-          <Mute />
+        <ButtonSvg
+          style={{ padding: '.5rem' }}
+          className='mute'
+          onClick={() => mediaPlayer.dispatch({ type: ACTIONS.SET_VOLUME, payload: { volume: 0 } })}
+        >
+          {mediaPlayer.state.volume > 0.1 ? <LowVolume /> : <Mute />}
         </ButtonSvg>
 
         <div className='slider-container'>
-          <CustomSlider value={value} onChange={handleChange} aria-labelledby='continuous-slider' />
+          <CustomSlider value={mediaPlayer.state.volume * 100} onChange={handleChange} aria-labelledby='continuous-slider' />
         </div>
 
         <ButtonSvg style={{ padding: '.5rem' }} className='high'>
