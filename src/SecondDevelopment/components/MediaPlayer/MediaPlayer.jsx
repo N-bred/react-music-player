@@ -4,31 +4,44 @@ import { Play, Repeat, Pause, Random, Previous } from '../../icons'
 import ButtonSvg from '../ButtonSvg/ButtonSvg'
 import ProgressBar from '../ProgressBar/ProgressBar'
 import VolumeSlider from '../VolumeSlider/VolumeSlider'
-import { ACTIONS, useMusicList } from '../../context/MusicList'
+import { ACTIONS as MusicListActions, useMusicList } from '../../context/MusicList'
+import { ACTIONS as MediaPlayerActions, useMediaPlayer } from '../../context/MediaPlayer'
 
 function MediaPlayer(props) {
   const musicList = useMusicList()
+  const mediaPlayer = useMediaPlayer()
 
   return (
     <StyledMediaPlayer {...props}>
       <div className='controls'>
         <div className='controls-bar'>
           <ButtonSvg
-            onClick={() => musicList.dispatch({ type: ACTIONS.SET_RANDOM })}
+            onClick={() => musicList.dispatch({ type: MusicListActions.SET_RANDOM })}
             isActive={musicList.state.isRandomized}
           >
             <Random />
           </ButtonSvg>
-          <ButtonSvg onClick={() => musicList.dispatch({ type: ACTIONS.SET_PREVIOUS })}>
+          <ButtonSvg onClick={() => musicList.dispatch({ type: MusicListActions.SET_PREVIOUS })}>
             <Previous />
           </ButtonSvg>
-          <ButtonSvg>
-            <Play />
-          </ButtonSvg>
-          <ButtonSvg rotate={true} onClick={() => musicList.dispatch({ type: ACTIONS.SET_NEXT })}>
+
+          {mediaPlayer.state.isPlaying ? (
+            <ButtonSvg onClick={() => mediaPlayer.dispatch({ type: MediaPlayerActions.PAUSE })}>
+              <Pause />
+            </ButtonSvg>
+          ) : (
+            <ButtonSvg onClick={() => mediaPlayer.dispatch({ type: MediaPlayerActions.PLAY })}>
+              <Play />
+            </ButtonSvg>
+          )}
+
+          <ButtonSvg rotate={true} onClick={() => musicList.dispatch({ type: MusicListActions.SET_NEXT })}>
             <Previous />
           </ButtonSvg>
-          <ButtonSvg onClick={() => musicList.dispatch({ type: ACTIONS.SET_REPEAT })} isActive={musicList.state.isRepeating}>
+          <ButtonSvg
+            onClick={() => musicList.dispatch({ type: MusicListActions.SET_REPEAT })}
+            isActive={musicList.state.isRepeating}
+          >
             <Repeat />
           </ButtonSvg>
         </div>
