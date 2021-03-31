@@ -1,4 +1,4 @@
-import React, { useReducer, createContext, useContext, useEffect } from 'react'
+import React, { useReducer, createContext, useContext } from 'react'
 
 const ACTIONS = {
   PLAY: 'set_playing',

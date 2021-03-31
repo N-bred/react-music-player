@@ -4,7 +4,7 @@ import { Play, Repeat, Pause, Random, Previous } from '../../icons'
 import ButtonSvg from '../ButtonSvg/ButtonSvg'
 import ProgressBar from '../ProgressBar/ProgressBar'
 import VolumeSlider from '../VolumeSlider/VolumeSlider'
-import { ACTIONS as MusicListActions, useMusicList } from '../../context/MusicList'
+import { useMusicList } from '../../context/MusicList'
 import { useMediaPlayer } from '../../context/MediaPlayer'
 import { useMediaPlayerListController } from '../../context/MediaPlayerListController'
 
@@ -14,7 +14,7 @@ function MediaPlayer(props) {
   const {
     handlePlayButton,
     handlePauseButton,
-    handleMusicListItemChange,
+
     handleRandomizeButton,
     handlePreviousButton,
     handleNextButton,

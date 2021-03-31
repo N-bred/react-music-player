@@ -3,6 +3,11 @@ import styled from 'styled-components'
 import Button from '../Button/Button'
 import { ACTIONS, useMusicList } from '../../context/MusicList'
 
+const validateInputs = (...args) => {
+  if (args.some((arg) => arg === '')) return false
+  return true
+}
+
 function UploadSongForm(props) {
   const musicList = useMusicList()
   const [name, setName] = useState('')
@@ -12,7 +17,7 @@ function UploadSongForm(props) {
   const [btnDisabled, setBtnDisabled] = useState(true)
 
   useEffect(() => {
-    setBtnDisabled(!validateInputs())
+    setBtnDisabled(!validateInputs(name, artist, songFile))
   }, [name, artist, songFile])
 
   const handleImgInput = (e) => {
@@ -41,13 +46,6 @@ function UploadSongForm(props) {
       return
     }
     setSongFile(file)
-  }
-
-  const validateInputs = () => {
-    if (name === '') return false
-    if (artist === '') return false
-    if (songFile === '') return false
-    return true
   }
 
   const handleFormSubmit = (e) => {

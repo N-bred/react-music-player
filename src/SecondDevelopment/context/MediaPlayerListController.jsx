@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useState, useCallback } from 'react'
 import { ACTIONS as MusicListActions, useMusicList } from './MusicList'
 import { ACTIONS as MediaPlayerActions, useMediaPlayer } from './MediaPlayer'
 
@@ -9,11 +9,15 @@ function MediaPlayerListControllerProvider({ children }) {
   const mediaPlayer = useMediaPlayer()
   const [playing, setPlaying] = useState(false)
 
-  useEffect(() => {
+  const handleDispatch = useCallback(() => {
     mediaPlayer.dispatch({
       type: MediaPlayerActions.SET_SONG,
       payload: { src: process.env.PUBLIC_URL + musicList.state.current_song.src, playing },
     })
+  }, [mediaPlayer, musicList.state.current_song.src, playing])
+
+  useEffect(() => {
+    handleDispatch()
   }, [musicList.state, playing])
 
   const handlePlayButton = () => mediaPlayer.dispatch({ type: MediaPlayerActions.PLAY })
