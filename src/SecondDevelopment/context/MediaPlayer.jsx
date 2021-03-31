@@ -6,6 +6,7 @@ const ACTIONS = {
   SET_VOLUME: 'set_volume',
   SET_SONG: 'set_song',
   ADD_CURRENT_TIME: 'add_current_time',
+  SET_CURRENT_TIME: 'set_current_time',
 }
 
 function PLAY(state) {
@@ -41,6 +42,12 @@ function ADD_CURRENT_TIME(state, action) {
   return { ...state, currentTime: action.payload.currentTime }
 }
 
+function SET_CURRENT_TIME(state, action) {
+  const newState = { ...state }
+  newState.audio.currentTime = action.payload.seconds
+  return newState
+}
+
 function reducer(state, action) {
   switch (action.type) {
     case ACTIONS.PLAY:
@@ -53,6 +60,8 @@ function reducer(state, action) {
       return SET_SONG(state, action)
     case ACTIONS.ADD_CURRENT_TIME:
       return ADD_CURRENT_TIME(state, action)
+    case ACTIONS.SET_CURRENT_TIME:
+      return SET_CURRENT_TIME(state, action)
     default:
       console.log('nono')
       break

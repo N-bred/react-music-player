@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import styled from 'styled-components'
-import { useMediaPlayer } from '../../context/MediaPlayer'
+import { ACTIONS, useMediaPlayer } from '../../context/MediaPlayer'
 
 const secToMin = (s) => {
   if (Number.isNaN(s)) return false
@@ -9,13 +9,20 @@ const secToMin = (s) => {
 
 function ProgressBar() {
   const mediaPlayer = useMediaPlayer()
-
+  const barRef = useRef()
   const percentage = parseInt((mediaPlayer.state.currentTime / mediaPlayer.state.audio.duration) * 100) || 0
+
+  const handleClick = (e) => {
+    const position = e.clientX - barRef.current.getBoundingClientRect().x
+    const percentPosition = parseInt((position * 100) / barRef.current.getBoundingClientRect().width)
+    const seconds = parseInt((percentPosition * mediaPlayer.state.audio.duration) / 100)
+    mediaPlayer.dispatch({ type: ACTIONS.SET_CURRENT_TIME, payload: { seconds } })
+  }
 
   return (
     <StyledProgressBar width={percentage || 0}>
       <div className='left-time'>{secToMin(parseInt(mediaPlayer.state.currentTime))}</div>
-      <div className='progress'>
+      <div className='progress' ref={barRef} onClick={handleClick}>
         <span className='circle'></span>
         <div className='progress-bar'></div>
       </div>
