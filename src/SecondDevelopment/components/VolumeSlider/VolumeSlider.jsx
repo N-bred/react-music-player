@@ -4,11 +4,14 @@ import { Mute, HighVolume } from '../../icons'
 import ButtonSvg from '../ButtonSvg/ButtonSvg'
 import Slider from '@material-ui/core/Slider'
 import { withStyles } from '@material-ui/core'
+import { ACTIONS, useMediaPlayer } from '../../context/MediaPlayer'
 
 function VolumeSlider(props) {
-  const [value, setValue] = useState(30)
+  const mediaPlayer = useMediaPlayer()
+  const [value, setValue] = useState(mediaPlayer.state.volume * 100)
   const handleChange = (event, newValue) => {
     setValue(newValue)
+    mediaPlayer.dispatch({ type: ACTIONS.SET_VOLUME, payload: { volume: newValue / 100 } })
   }
   return (
     <StyledVolumeSlider className={props.className}>
