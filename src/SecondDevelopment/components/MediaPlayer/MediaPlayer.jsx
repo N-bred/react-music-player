@@ -6,10 +6,12 @@ import ProgressBar from '../ProgressBar/ProgressBar'
 import VolumeSlider from '../VolumeSlider/VolumeSlider'
 import { ACTIONS as MusicListActions, useMusicList } from '../../context/MusicList'
 import { ACTIONS as MediaPlayerActions, useMediaPlayer } from '../../context/MediaPlayer'
+import { useMediaPlayerListController } from '../../context/MediaPlayerListController'
 
 function MediaPlayer(props) {
   const musicList = useMusicList()
   const mediaPlayer = useMediaPlayer()
+  const { handlePlayButton, handlePauseButton } = useMediaPlayerListController()
 
   return (
     <StyledMediaPlayer {...props}>
@@ -26,11 +28,11 @@ function MediaPlayer(props) {
           </ButtonSvg>
 
           {mediaPlayer.state.isPlaying ? (
-            <ButtonSvg onClick={() => mediaPlayer.dispatch({ type: MediaPlayerActions.PAUSE })}>
+            <ButtonSvg onClick={handlePauseButton}>
               <Pause />
             </ButtonSvg>
           ) : (
-            <ButtonSvg onClick={() => mediaPlayer.dispatch({ type: MediaPlayerActions.PLAY })}>
+            <ButtonSvg onClick={handlePlayButton}>
               <Play />
             </ButtonSvg>
           )}

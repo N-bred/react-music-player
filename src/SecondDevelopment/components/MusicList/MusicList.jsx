@@ -1,19 +1,16 @@
 import React from 'react'
 import styled from 'styled-components'
 import MusicListItem from '../MusicListItem/MusicListItem'
-import { ACTIONS } from '../../context/MusicList'
-
+import { useMediaPlayerListController } from '../../context/MediaPlayerListController'
 function MusicList(props) {
+  const { handleMusicListItemChange } = useMediaPlayerListController()
   return (
     <StyledMusicList>
       <h2>Available Songs</h2>
       <ul>
         {props.list.map((el, i) => (
           <li key={el.id}>
-            <MusicListItem
-              current={props.current === i}
-              onClick={() => props.dispatcher({ type: ACTIONS.SET_CURRENT, payload: { id: el.id } })}
-            >
+            <MusicListItem current={props.current === i} onClick={() => handleMusicListItemChange({ id: el.id })}>
               {el.artist} - {el.name}
             </MusicListItem>
           </li>

@@ -6,19 +6,22 @@ import PlayerScene from './components/PlayerScene/PlayerScene'
 import PlayerCanvas from './components/PlayerCanvas/PlayerCanvas'
 import { MusicListProvider } from './context/MusicList'
 import { MediaPlayerProvider } from './context/MediaPlayer'
+import { MediaPlayerListControllerProvider } from './context/MediaPlayerListController'
 
 function App() {
   return (
     <div>
       <MusicListProvider>
         <MediaPlayerProvider>
-          <Ui>
-            <Sidebar className='sidebar' />
-            <PlayerScene className='player-scene'>
-              <PlayerCanvas />
-            </PlayerScene>
-            <MediaPlayer className='media-player' />
-          </Ui>
+          <MediaPlayerListControllerProvider>
+            <Ui>
+              <Sidebar className='sidebar' />
+              <PlayerScene className='player-scene'>
+                <PlayerCanvas />
+              </PlayerScene>
+              <MediaPlayer className='media-player' />
+            </Ui>
+          </MediaPlayerListControllerProvider>
         </MediaPlayerProvider>
       </MusicListProvider>
     </div>

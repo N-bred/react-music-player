@@ -1,4 +1,4 @@
-import React, { createContext, useReducer, useContext } from 'react'
+import React, { createContext, useReducer, useContext, useEffect } from 'react'
 import API from '../API/api'
 
 const ACTIONS = {
@@ -24,6 +24,7 @@ const SET_CURRENT_INDEX = (state, id) => ({
 })
 
 const SET_NEXT = (state) => {
+  if (state.isRepeating) return SET_CURRENT(state, { payload: { id: state.current } })
   const nextIdx = state.current + 1
   let idx = 0
 
@@ -103,6 +104,7 @@ function MusicListProvider({ children }) {
   })
 
   const value = { state, dispatch }
+
   return <MusicListContext.Provider value={value}>{children}</MusicListContext.Provider>
 }
 
