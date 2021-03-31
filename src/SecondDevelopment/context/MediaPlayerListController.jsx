@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, useCallback } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 import { ACTIONS as MusicListActions, useMusicList } from './MusicList'
 import { ACTIONS as MediaPlayerActions, useMediaPlayer } from './MediaPlayer'
 
@@ -9,26 +9,17 @@ function MediaPlayerListControllerProvider({ children }) {
   const mediaPlayer = useMediaPlayer()
   const [playing, setPlaying] = useState(false)
 
-  const handleDispatch = useCallback(() => {
-    mediaPlayer.dispatch({
-      type: MediaPlayerActions.SET_SONG,
-      payload: { src: process.env.PUBLIC_URL + musicList.state.current_song.src, playing },
-    })
-  }, [mediaPlayer, musicList.state.current_song.src, playing])
-
-  useEffect(() => {
-    handleDispatch()
-  }, [musicList.state, playing])
-
   const handlePlayButton = () => mediaPlayer.dispatch({ type: MediaPlayerActions.PLAY })
   const handlePauseButton = () => mediaPlayer.dispatch({ type: MediaPlayerActions.PAUSE })
 
   const handleMusicListItemChange = (payload) => {
     musicList.dispatch({ type: MusicListActions.SET_CURRENT, payload })
+
     setPlaying(true)
   }
   const handleRandomizeButton = () => {
     musicList.dispatch({ type: MusicListActions.SET_RANDOM })
+
     setPlaying(false)
   }
   const handlePreviousButton = () => {
@@ -41,8 +32,30 @@ function MediaPlayerListControllerProvider({ children }) {
   }
   const handleRepeatButton = () => {
     musicList.dispatch({ type: MusicListActions.SET_REPEAT })
-    setPlaying(false)
+    setPlaying(true)
   }
+
+  const handleDispatch = () => {
+    mediaPlayer.dispatch({
+      type: MediaPlayerActions.SET_SONG,
+      payload: { src: musicList.state.current_song.src, playing },
+    })
+  }
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    handleDispatch()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [musicList, playing])
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (mediaPlayer.state.ended) {
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      handleNextButton()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mediaPlayer.state])
 
   const value = {
     handlePlayButton,

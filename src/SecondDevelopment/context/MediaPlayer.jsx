@@ -7,16 +7,17 @@ const ACTIONS = {
   SET_SONG: 'set_song',
   ADD_CURRENT_TIME: 'add_current_time',
   SET_CURRENT_TIME: 'set_current_time',
+  SET_ENDED: 'set_ended',
 }
 
 function PLAY(state) {
-  const newState = { ...state, started: true }
+  const newState = { ...state, started: true, ended: false }
   newState.audio.play()
   return newState
 }
 
 function PAUSE(state) {
-  const newState = { ...state }
+  const newState = { ...state, ended: false }
   newState.audio.pause()
   return newState
 }
@@ -28,7 +29,7 @@ function SET_VOLUME(state, action) {
 }
 
 function SET_SONG(state, action) {
-  const newState = { ...state }
+  const newState = { ...state, ended: false }
   newState.audio.src = action.payload.src
 
   if (action.payload.playing) {
@@ -48,6 +49,10 @@ function SET_CURRENT_TIME(state, action) {
   return newState
 }
 
+function SET_ENDED(state) {
+  return { ...state, ended: true }
+}
+
 function reducer(state, action) {
   switch (action.type) {
     case ACTIONS.PLAY:
@@ -62,9 +67,12 @@ function reducer(state, action) {
       return ADD_CURRENT_TIME(state, action)
     case ACTIONS.SET_CURRENT_TIME:
       return SET_CURRENT_TIME(state, action)
-    default:
-      console.log('nono')
-      break
+    case ACTIONS.SET_ENDED:
+      return SET_ENDED(state)
+
+    default: {
+      throw new Error(`Unhandled action type: ${action.type}`)
+    }
   }
 }
 
@@ -78,10 +86,15 @@ function MediaPlayerProvider({ children }) {
     audio,
     started: false,
     currentTime: 0,
+    ended: false,
   })
 
   audio.addEventListener('timeupdate', () => {
     dispatch({ type: ACTIONS.ADD_CURRENT_TIME, payload: { currentTime: audio.currentTime } })
+  })
+
+  audio.addEventListener('ended', () => {
+    dispatch({ type: ACTIONS.SET_ENDED })
   })
 
   const value = { state, dispatch }

@@ -22,9 +22,11 @@ function ProgressBar() {
   return (
     <StyledProgressBar width={percentage || 0}>
       <div className='left-time'>{secToMin(parseInt(mediaPlayer.state.currentTime))}</div>
-      <div className='progress' ref={barRef} onClick={handleClick}>
-        <span className='circle'></span>
-        <div className='progress-bar'></div>
+      <div className='progress-wrapper' ref={barRef} onClick={handleClick}>
+        <div className='progress'>
+          <span className='circle'></span>
+          <div className='progress-bar'></div>
+        </div>
       </div>
 
       <div className='total-time'>{secToMin(parseInt(mediaPlayer.state.audio.duration)) || '00:00'}</div>
@@ -53,10 +55,15 @@ const StyledProgressBar = styled.div`
     margin-left: 1.5rem;
   }
 
+  .progress-wrapper {
+    padding: 1rem 0;
+    width: 100%;
+    height: 0.5rem;
+  }
+
   .progress {
     width: 100%;
     height: 0.5rem;
-    margin: 1rem 0;
     border-radius: 5px;
     position: relative;
     background-color: #444;

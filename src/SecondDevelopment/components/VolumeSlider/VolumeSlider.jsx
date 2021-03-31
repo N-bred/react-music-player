@@ -22,7 +22,7 @@ function VolumeSlider(props) {
           className='mute'
           onClick={() => mediaPlayer.dispatch({ type: ACTIONS.SET_VOLUME, payload: { volume: 0 } })}
         >
-          {mediaPlayer.state.volume > 0.1 ? <LowVolume /> : <Mute />}
+          {mediaPlayer.state.audio.volume > 0.1 ? <LowVolume /> : <Mute />}
         </ButtonSvg>
 
         <div className='slider-container'>
