@@ -11,19 +11,24 @@ import { useMediaPlayerListController } from '../../context/MediaPlayerListContr
 function MediaPlayer(props) {
   const musicList = useMusicList()
   const mediaPlayer = useMediaPlayer()
-  const { handlePlayButton, handlePauseButton } = useMediaPlayerListController()
+  const {
+    handlePlayButton,
+    handlePauseButton,
+    handleMusicListItemChange,
+    handleRandomizeButton,
+    handlePreviousButton,
+    handleNextButton,
+    handleRepeatButton,
+  } = useMediaPlayerListController()
 
   return (
     <StyledMediaPlayer {...props}>
       <div className='controls'>
         <div className='controls-bar'>
-          <ButtonSvg
-            onClick={() => musicList.dispatch({ type: MusicListActions.SET_RANDOM })}
-            isActive={musicList.state.isRandomized}
-          >
+          <ButtonSvg onClick={handleRandomizeButton} isActive={musicList.state.isRandomized}>
             <Random />
           </ButtonSvg>
-          <ButtonSvg onClick={() => musicList.dispatch({ type: MusicListActions.SET_PREVIOUS })}>
+          <ButtonSvg onClick={handlePreviousButton}>
             <Previous />
           </ButtonSvg>
 
@@ -37,13 +42,10 @@ function MediaPlayer(props) {
             </ButtonSvg>
           )}
 
-          <ButtonSvg rotate={true} onClick={() => musicList.dispatch({ type: MusicListActions.SET_NEXT })}>
+          <ButtonSvg rotate={true} onClick={handleNextButton}>
             <Previous />
           </ButtonSvg>
-          <ButtonSvg
-            onClick={() => musicList.dispatch({ type: MusicListActions.SET_REPEAT })}
-            isActive={musicList.state.isRepeating}
-          >
+          <ButtonSvg onClick={handleRepeatButton} isActive={musicList.state.isRepeating}>
             <Repeat />
           </ButtonSvg>
         </div>

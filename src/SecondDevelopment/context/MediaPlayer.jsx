@@ -29,10 +29,11 @@ function SET_SONG(state, action) {
   const newState = { ...state }
   newState.audio.src = action.payload.src
 
-  if (newState.started) {
+  if (action.payload.playing) {
     newState.audio.play()
   }
-  return newState
+
+  return { ...newState, started: true }
 }
 
 function reducer(state, action) {

@@ -14,7 +14,7 @@ const ACTIONS = {
 const SET_CURRENT = (state, action) => ({
   ...state,
   current: action.payload.id,
-  current_song: state.API.find((song) => song.id === action.payload.id),
+  current_song: state.API[action.payload.id], //state.API.find((song) => song.id === action.payload.id),
 })
 
 const SET_CURRENT_INDEX = (state, id) => ({
@@ -55,7 +55,7 @@ const SET_PREVIOUS = (state) => {
 const SET_REPEAT = (state) => ({ ...state, isRepeating: !state.isRepeating })
 
 const SET_RANDOM = (state) => {
-  if (state.isRandomized) return { ...state, API: [...state.originalApi], isRandomized: false }
+  if (state.isRandomized) return SET_CURRENT_INDEX({ ...state, API: [...state.originalApi], isRandomized: false }, 0)
   const random = [...state.API].sort(() => 0.5 - Math.random())
   return SET_CURRENT_INDEX({ ...state, isRandomized: true, API: random }, 0)
 }
