@@ -8,20 +8,20 @@ const ACTIONS = {
 }
 
 function PLAY(state) {
-  const newState = { ...state, isPlaying: true }
+  const newState = { ...state, started: true }
   newState.audio.play()
   return newState
 }
 
 function PAUSE(state) {
-  const newState = { ...state, isPlaying: false }
+  const newState = { ...state }
   newState.audio.pause()
   return newState
 }
 
 function SET_VOLUME(state, action) {
-  const newState = { ...state, volume: action.payload.volume }
-  newState.audio.volume = newState.volume
+  const newState = { ...state }
+  newState.audio.volume = action.payload.volume
   return newState
 }
 
@@ -29,6 +29,9 @@ function SET_SONG(state, action) {
   const newState = { ...state }
   newState.audio.src = action.payload.src
 
+  if (newState.started) {
+    newState.audio.play()
+  }
   return newState
 }
 
@@ -42,6 +45,9 @@ function reducer(state, action) {
       return SET_VOLUME(state, action)
     case ACTIONS.SET_SONG:
       return SET_SONG(state, action)
+    default:
+      console.log('nono')
+      break
   }
 }
 
@@ -50,12 +56,12 @@ function reducer(state, action) {
 const MediaPlayerContext = createContext()
 
 function MediaPlayerProvider({ children }) {
+  const audio = new Audio()
   const [state, dispatch] = useReducer(reducer, {
-    isPlaying: false,
-    volume: 0.5,
-    audio: new Audio(),
+    audio,
     started: false,
   })
+
   const value = { state, dispatch }
 
   return <MediaPlayerContext.Provider value={value}>{children}</MediaPlayerContext.Provider>

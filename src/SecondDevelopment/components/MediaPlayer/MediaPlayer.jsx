@@ -5,7 +5,7 @@ import ButtonSvg from '../ButtonSvg/ButtonSvg'
 import ProgressBar from '../ProgressBar/ProgressBar'
 import VolumeSlider from '../VolumeSlider/VolumeSlider'
 import { ACTIONS as MusicListActions, useMusicList } from '../../context/MusicList'
-import { ACTIONS as MediaPlayerActions, useMediaPlayer } from '../../context/MediaPlayer'
+import { useMediaPlayer } from '../../context/MediaPlayer'
 import { useMediaPlayerListController } from '../../context/MediaPlayerListController'
 
 function MediaPlayer(props) {
@@ -27,7 +27,7 @@ function MediaPlayer(props) {
             <Previous />
           </ButtonSvg>
 
-          {mediaPlayer.state.isPlaying ? (
+          {!mediaPlayer.state.audio.paused ? (
             <ButtonSvg onClick={handlePauseButton}>
               <Pause />
             </ButtonSvg>

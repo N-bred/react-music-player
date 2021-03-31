@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { Mute, HighVolume, LowVolume } from '../../icons'
 import ButtonSvg from '../ButtonSvg/ButtonSvg'
@@ -14,7 +14,7 @@ function VolumeSlider(props) {
   }
   return (
     <StyledVolumeSlider className={props.className}>
-      <div className='value'>{parseInt(mediaPlayer.state.volume * 100)}%</div>
+      <div className='value'>{parseInt(mediaPlayer.state.audio.volume * 100)}%</div>
 
       <div className='slider'>
         <ButtonSvg
@@ -26,7 +26,11 @@ function VolumeSlider(props) {
         </ButtonSvg>
 
         <div className='slider-container'>
-          <CustomSlider value={mediaPlayer.state.volume * 100} onChange={handleChange} aria-labelledby='continuous-slider' />
+          <CustomSlider
+            value={mediaPlayer.state.audio.volume * 100}
+            onChange={handleChange}
+            aria-labelledby='continuous-slider'
+          />
         </div>
 
         <ButtonSvg style={{ padding: '.5rem' }} className='high'>
