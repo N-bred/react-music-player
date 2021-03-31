@@ -1,16 +1,26 @@
 import React from 'react'
 import styled from 'styled-components'
+import { useMediaPlayer } from '../../context/MediaPlayer'
+
+const secToMin = (s) => {
+  if (Number.isNaN(s)) return false
+  return (s - (s %= 60)) / 60 + (9 < s ? ':' : ':0') + s
+}
 
 function ProgressBar() {
+  const mediaPlayer = useMediaPlayer()
+
+  const percentage = parseInt((mediaPlayer.state.currentTime / mediaPlayer.state.audio.duration) * 100) || 0
+
   return (
-    <StyledProgressBar>
-      <div className='left-time'>00:56</div>
+    <StyledProgressBar width={percentage || 0}>
+      <div className='left-time'>{secToMin(parseInt(mediaPlayer.state.currentTime))}</div>
       <div className='progress'>
         <span className='circle'></span>
         <div className='progress-bar'></div>
       </div>
 
-      <div className='total-time'>04:24</div>
+      <div className='total-time'>{secToMin(parseInt(mediaPlayer.state.audio.duration)) || '00:00'}</div>
     </StyledProgressBar>
   )
 }
@@ -21,6 +31,7 @@ const StyledProgressBar = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0 5rem;
+  cursor: pointer;
 
   .left-time,
   .total-time {
@@ -45,7 +56,7 @@ const StyledProgressBar = styled.div`
   }
 
   .progress-bar {
-    width: 50%;
+    width: ${(props) => props.width}%;
     background: #fff;
     height: 100%;
   }
@@ -55,7 +66,7 @@ const StyledProgressBar = styled.div`
     width: 1rem;
     border-radius: 50%;
     position: absolute;
-    left: calc(50% - 0.5rem);
+    left: calc(${(props) => props.width}% - 0.5rem);
     bottom: calc(50% - 0.5rem);
     background: #fff;
     border: none;

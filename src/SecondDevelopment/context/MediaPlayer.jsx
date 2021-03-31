@@ -1,10 +1,11 @@
-import React, { useReducer, createContext, useContext } from 'react'
+import React, { useReducer, createContext, useContext, useEffect } from 'react'
 
 const ACTIONS = {
   PLAY: 'set_playing',
   PAUSE: 'set_paused',
   SET_VOLUME: 'set_volume',
   SET_SONG: 'set_song',
+  ADD_CURRENT_TIME: 'add_current_time',
 }
 
 function PLAY(state) {
@@ -36,6 +37,10 @@ function SET_SONG(state, action) {
   return { ...newState, started: true }
 }
 
+function ADD_CURRENT_TIME(state, action) {
+  return { ...state, currentTime: action.payload.currentTime }
+}
+
 function reducer(state, action) {
   switch (action.type) {
     case ACTIONS.PLAY:
@@ -46,6 +51,8 @@ function reducer(state, action) {
       return SET_VOLUME(state, action)
     case ACTIONS.SET_SONG:
       return SET_SONG(state, action)
+    case ACTIONS.ADD_CURRENT_TIME:
+      return ADD_CURRENT_TIME(state, action)
     default:
       console.log('nono')
       break
@@ -61,6 +68,11 @@ function MediaPlayerProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, {
     audio,
     started: false,
+    currentTime: 0,
+  })
+
+  audio.addEventListener('timeupdate', () => {
+    dispatch({ type: ACTIONS.ADD_CURRENT_TIME, payload: { currentTime: audio.currentTime } })
   })
 
   const value = { state, dispatch }
