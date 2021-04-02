@@ -1,4 +1,4 @@
-import React, { useReducer, createContext, useContext } from 'react'
+import React, { useReducer, createContext, useContext, useState } from 'react'
 
 const ACTIONS = {
   PLAY: 'set_playing',
@@ -54,11 +54,14 @@ function SET_ENDED(state) {
   return { ...state, ended: true }
 }
 
-function SET_FREQUENCY(state, action) {
-  const { dataArray, analyser } = action.payload
+function SET_FREQUENCY(state) {
+  function freq() {
+    state.analyser.getByteFrequencyData(state.dataArray)
+    state.animationFrame = requestAnimationFrame(freq)
+  }
+  freq()
 
-  analyser.getByteFrequencyData(dataArray)
-  return { ...state, frequency: dataArray }
+  return { ...state, frequency: state.dataArray }
 }
 
 function reducer(state, action) {
@@ -104,10 +107,17 @@ function MediaPlayerProvider({ children }) {
     started: false,
     currentTime: 0,
     ended: false,
-    frequency: null,
   })
 
-  window.addEventListener('mousemove', () => {
+  const [frequency, setFrequency] = useState([])
+  const [animationFrame, setAnimationFrame] = useState()
+
+  function GET_FREQUENCY() {
+    analyser.getByteFrequencyData(dataArray)
+    setFrequency(dataArray)
+  }
+
+  window.addEventListener('mousedown', () => {
     if (audioCtx.state !== 'running') {
       audioCtx.resume()
     }
@@ -115,14 +125,22 @@ function MediaPlayerProvider({ children }) {
 
   audio.addEventListener('timeupdate', () => {
     dispatch({ type: ACTIONS.ADD_CURRENT_TIME, payload: { currentTime: audio.currentTime } })
-    dispatch({ type: ACTIONS.SET_FREQUENCY, payload: { dataArray, analyser } })
+  })
+
+  audio.addEventListener('pause', () => {
+    clearInterval(animationFrame)
+  })
+
+  audio.addEventListener('play', () => {
+    setAnimationFrame(setInterval(GET_FREQUENCY, 1000 / 60))
   })
 
   audio.addEventListener('ended', () => {
+    clearInterval(animationFrame)
     dispatch({ type: ACTIONS.SET_ENDED })
   })
 
-  const value = { state, dispatch }
+  const value = { state, dispatch, frequency }
 
   return <MediaPlayerContext.Provider value={value}>{children}</MediaPlayerContext.Provider>
 }
