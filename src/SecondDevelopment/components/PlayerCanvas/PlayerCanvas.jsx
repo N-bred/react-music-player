@@ -4,29 +4,20 @@ import { useMediaPlayer } from '../../context/MediaPlayer'
 import Sketch from 'react-p5'
 
 function PlayerCanvas(props) {
-  const parentReft = useRef()
-  const [size, setSize] = useState({ width: 0, height: 0 })
   const {
     state: { frequency },
   } = useMediaPlayer()
 
-  useLayoutEffect(() => {
-    const { width, height } = parentReft.current.canvasParentRef.current.getBoundingClientRect()
-    setSize({ width, height })
-  }, [])
-
   const setup = (p5, canvasParentRef) => {
-    const { width, height } = size
-    p5.createCanvas(width, height).parent(canvasParentRef)
+    p5.createCanvas(1, 1).parent(canvasParentRef)
   }
 
   const draw = (p5) => {
     p5.background(0)
   }
-
   return (
     <StyledPlayerCanvas>
-      <Sketch setup={setup} draw={draw} ref={parentReft} />
+      <Sketch setup={setup} draw={draw} />
     </StyledPlayerCanvas>
   )
 }
@@ -41,6 +32,11 @@ const StyledPlayerCanvas = styled.div`
   .react-p5 {
     width: 100%;
     height: 100%;
+
+    canvas.p5Canvas {
+      width: 100% !important;
+      height: 100% !important;
+    }
   }
 `
 
