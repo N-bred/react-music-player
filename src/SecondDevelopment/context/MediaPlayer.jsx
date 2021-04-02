@@ -8,6 +8,7 @@ const ACTIONS = {
   ADD_CURRENT_TIME: 'add_current_time',
   SET_CURRENT_TIME: 'set_current_time',
   SET_ENDED: 'set_ended',
+  SET_FREQUENCY: 'set_frequency',
 }
 
 function PLAY(state) {
@@ -53,6 +54,13 @@ function SET_ENDED(state) {
   return { ...state, ended: true }
 }
 
+function SET_FREQUENCY(state, action) {
+  const { dataArray, analyser } = action.payload
+
+  analyser.getByteFrequencyData(dataArray)
+  return { ...state, frequency: dataArray }
+}
+
 function reducer(state, action) {
   switch (action.type) {
     case ACTIONS.PLAY:
@@ -69,6 +77,8 @@ function reducer(state, action) {
       return SET_CURRENT_TIME(state, action)
     case ACTIONS.SET_ENDED:
       return SET_ENDED(state)
+    case ACTIONS.SET_FREQUENCY:
+      return SET_FREQUENCY(state, action)
 
     default: {
       throw new Error(`Unhandled action type: ${action.type}`)
@@ -82,15 +92,30 @@ const MediaPlayerContext = createContext()
 
 function MediaPlayerProvider({ children }) {
   const audio = new Audio()
+  const audioCtx = new AudioContext()
+  const analyser = audioCtx.createAnalyser()
+  const source = audioCtx.createMediaElementSource(audio)
+  source.connect(analyser)
+  analyser.connect(audioCtx.destination)
+  const dataArray = new Uint8Array(analyser.frequencyBinCount)
+
   const [state, dispatch] = useReducer(reducer, {
     audio,
     started: false,
     currentTime: 0,
     ended: false,
+    frequency: null,
+  })
+
+  window.addEventListener('mousemove', () => {
+    if (audioCtx.state !== 'running') {
+      audioCtx.resume()
+    }
   })
 
   audio.addEventListener('timeupdate', () => {
     dispatch({ type: ACTIONS.ADD_CURRENT_TIME, payload: { currentTime: audio.currentTime } })
+    dispatch({ type: ACTIONS.SET_FREQUENCY, payload: { dataArray, analyser } })
   })
 
   audio.addEventListener('ended', () => {
