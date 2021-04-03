@@ -18,11 +18,70 @@ const canvas = (ctx, size) => {
     ctx.strokeStyle = color
     ctx.stroke()
   }
+
+  const drawLine = (strokeStyle, lineWidth, lineCap, x, y, endX, endY) => {
+    ctx.strokeStyle = strokeStyle
+    ctx.lineWidth = lineWidth
+    ctx.lineCap = lineCap
+    ctx.beginPath()
+    ctx.moveTo(x, y)
+    ctx.lineTo(endX, endY)
+    ctx.stroke()
+  }
+
+  const drawCircle = (centerX, centerY, radius, fillStyle, strokeStyle, lineWidth) => {
+    ctx.save()
+    ctx.beginPath()
+    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI, false)
+    ctx.fillStyle = fillStyle
+    ctx.fill()
+    ctx.strokeStyle = strokeStyle
+    ctx.lineWidth = lineWidth
+    ctx.stroke()
+    ctx.restore()
+  }
   return {
     bg,
     rect,
     stroke,
+    drawLine,
+    drawCircle,
   }
+}
+
+const drawMainCircle = (cnv, size, radius) => {
+  const centerX = size.width / 2
+  const centerY = size.height / 2
+  cnv.drawCircle(centerX, centerY, radius, 'black', '#666', 5)
+}
+
+const drawLine = (opts, size, cnv) => {
+  const { i, bars, height, radius } = opts
+  const centerX = size.width / 2
+  const centerY = size.height / 2
+  const lineWidth = 1
+  const rads = (Math.PI * 2) / bars
+
+  const x = centerX + Math.cos(rads * i) * (radius + lineWidth)
+  const y = centerY + Math.sin(rads * i) * (radius + lineWidth)
+  const endX = centerX + Math.cos(rads * i) * (radius + height)
+  const endY = parseInt(centerY + Math.sin(rads * i) * (radius + height))
+
+  cnv.drawLine('#fff', lineWidth, 'round', x, y, endX, endY)
+}
+
+const drawCircle = (cnv, frequency, size, radius, bars) => {
+  frequency.slice(0).forEach((freq, i) => {
+    const height = freq
+    drawLine({ i, bars, height, radius }, size, cnv)
+  })
+}
+
+const drawBars = (cnv, frequency, size) => {
+  frequency.slice(0, parseInt(size.width / BAR_WIDTH)).forEach((freq, i) => {
+    cnv.rect('#ffffff', BAR_WIDTH * i * 1, size.height, BAR_WIDTH, -freq * 1.5)
+    cnv.stroke('#000')
+  })
 }
 
 function PlayerCanvas(props) {
@@ -43,10 +102,9 @@ function PlayerCanvas(props) {
     function draw(cnv) {
       cnv.bg('#000000')
 
-      mediaPlayer.frequency.slice(0, parseInt(size.width / BAR_WIDTH)).forEach((freq, i) => {
-        cnv.rect('#ffffff', BAR_WIDTH * i * 1, size.height, BAR_WIDTH, -freq * 1.5)
-        cnv.stroke('#000')
-      })
+      // drawBars(cnv, mediaPlayer.frequency, size)
+      // drawMainCircle(cnv, size, 50)
+      drawCircle(cnv, mediaPlayer.frequency, size, 50, 360)
 
       requestAnimationFrame(() => {
         draw(cnv)
@@ -55,9 +113,10 @@ function PlayerCanvas(props) {
     if (ctxRef.current) {
       const ctx = ctxRef.current
       const cnv = canvas(ctx, size)
+
       draw(cnv)
     }
-  }, [mediaPlayer.frequency])
+  }, [size, mediaPlayer.frequency])
 
   return (
     <StyledPlayerCanvas ref={parentRef}>
@@ -69,7 +128,7 @@ function PlayerCanvas(props) {
 const StyledPlayerCanvas = styled.div`
   width: 90%;
   background-color: rgba(0, 0, 0, 0.6);
-  height: 60%;
+  height: 80%;
   padding: 2rem;
   border-radius: 0.5rem;
 
