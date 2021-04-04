@@ -1,4 +1,4 @@
-const CanvasDrawVariants = (canvas, size, limit) => {
+const CanvasDrawVariants = (canvas, size) => {
   const drawMainCircle = (radius, fillStyle = 'black', strokeStyle = '#000', lineWidth = 5) => {
     const centerX = size.width / 2
     const centerY = size.height / 2
@@ -19,11 +19,14 @@ const CanvasDrawVariants = (canvas, size, limit) => {
     canvas.drawLine(color, lineWidth, 'round', x, y, endX, endY)
   }
 
-  const drawCircle = (frequency, radius, bars, colors, barWidth) => {
+  const drawCircle = (frequency, radius, bars, colors, barWidth, limit) => {
     let idx = 0
     frequency.forEach((freq, i) => {
       if (i >= limit * (1 + idx)) {
         idx++
+        if (idx > colors.length) {
+          idx = 0
+        }
       }
       drawLine({ i, bars, height: freq, radius }, colors[idx], barWidth)
     })

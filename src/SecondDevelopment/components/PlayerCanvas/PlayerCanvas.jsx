@@ -5,6 +5,7 @@ import CanvasDrawVariants from './CanvasDrawVariants'
 import Switch from '../Switch/Switch'
 import { ChooseRandomArrayElement } from '../../utils/ChooseRandomArrayElement'
 import { RandomizeArray } from '../../utils/RandomizeArray'
+import { useMusicList } from '../../context/MusicList.context'
 
 const BAR_WIDTH = 2
 const RADIUS = 50
@@ -13,6 +14,7 @@ const COLOR_SCHEME = ['#ff2a6d', '#05e9d8', '#7700a6', '#ff124f', '#ff00a0', '#d
 const LIMIT = [90, 180, 270, 360]
 
 function PlayerCanvas({ bars }) {
+  const musicList = useMusicList()
   const canvasRef = useRef(null)
   const parentRef = useRef(null)
   const requestRef = useRef(null)
@@ -29,18 +31,22 @@ function PlayerCanvas({ bars }) {
   useEffect(() => {
     const { width, height } = parentRef.current.getBoundingClientRect()
     canvasLib.current = CanvasLib(canvasRef.current, { width, height })
-    canvasDrawVariants.current = CanvasDrawVariants(canvasLib.current, { width, height }, ChooseRandomArrayElement(LIMIT))
+    canvasDrawVariants.current = CanvasDrawVariants(canvasLib.current, { width, height })
     canvasLib.current.fixDpi()
-    handleSetColors()
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  useEffect(() => {
+    handleSetColors()
+  }, [musicList.state.current_song.src, musicList.state.changed])
 
   const handleSetColors = () => {
     setColors({
       bars: ChooseRandomArrayElement(COLOR_SCHEME),
       circle: RandomizeArray(COLOR_SCHEME),
       mainCircle: ChooseRandomArrayElement(COLOR_SCHEME),
+      limit: ChooseRandomArrayElement(LIMIT),
     })
   }
 
@@ -49,7 +55,7 @@ function PlayerCanvas({ bars }) {
     if (drawMode === 'bars') {
       canvasDrawVariants.current.drawBars(bars, BAR_WIDTH, colors.bars)
     } else {
-      canvasDrawVariants.current.drawCircle(bars, RADIUS, BARS, colors.circle, BAR_WIDTH)
+      canvasDrawVariants.current.drawCircle(bars, RADIUS, BARS, colors.circle, BAR_WIDTH, colors.limit)
       canvasDrawVariants.current.drawMainCircle(RADIUS, colors.mainCircle, '#000')
     }
     requestRef.current = requestAnimationFrame(drawCanvas)

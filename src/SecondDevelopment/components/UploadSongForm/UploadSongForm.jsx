@@ -51,13 +51,12 @@ function UploadSongForm(props) {
   const handleFormSubmit = (e) => {
     e.preventDefault()
     if (!validateInputs()) return
-    if (imgFile === '') setImgFile('https://picsum.photos/1920/1080')
 
     const newSong = {
       name,
       artist,
       src: URL.createObjectURL(songFile),
-      img: imgFile,
+      img: imgFile || 'https://picsum.photos/1920/1080',
     }
 
     musicList.dispatch({ type: ACTIONS.ADD_SONG, value: newSong })
