@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 import styled from 'styled-components'
-import { useMediaPlayer, ACTIONS } from '../../context/MediaPlayer'
+import { useMediaPlayer } from '../../context/MediaPlayer.context'
 import CanvasLib from './CanvasLib'
 import CanvasDrawVariants from './CanvasDrawVariants'
 
@@ -9,7 +9,7 @@ const RADIUS = 50
 const BARS = 360
 
 function PlayerCanvas() {
-  const mediaPlayer = useMediaPlayer()
+  const { frequency, analyser } = useMediaPlayer()
   const canvasRef = useRef(null)
   const parentRef = useRef(null)
   const requestRef = useRef(null)
@@ -19,25 +19,26 @@ function PlayerCanvas() {
   useEffect(() => {
     const { width, height } = parentRef.current.getBoundingClientRect()
     canvasLib.current = CanvasLib(canvasRef.current, { width, height })
-    canvasDrawVariants.current = CanvasDrawVariants(canvasRef.current, { width, height })
+    canvasDrawVariants.current = CanvasDrawVariants(canvasLib.current, { width, height })
     canvasLib.current.fixDpi()
-    // requestRef.current = requestAnimationFrame(drawCanvas)
+    requestRef.current = requestAnimationFrame(drawCanvas)
     return () => cancelAnimationFrame(requestRef.current)
   }, [])
 
   const drawCanvas = () => {
-    canvasLib.current.clearRect(0, 0, 1000, 1000)
+    // canvasLib.current.clearRect(0, 0, 10000, 10000)
     canvasLib.current.bg('#000')
 
     // CALL Analyser
+    analyser.getByteFrequencyData(frequency)
 
     // Draw Bars
-    //canvasDrawVariants.current.drawBars(mediaPlayer.frequency, BAR_WIDTH)
+    canvasDrawVariants.current.drawBars(frequency, BAR_WIDTH)
     // Draw Circle
     // canvasDrawVariants.current.drawMainCircle(RADIUS)
-    //canvasDrawVariants.current.drawCircle(mediaPlayer.frequency, RADIUS, BARS)
+    //canvasDrawVariants.current.drawCircle(frequency, RADIUS, BARS)
 
-    // requestRef.current = requestAnimationFrame(drawCanvas)
+    requestRef.current = requestAnimationFrame(drawCanvas)
   }
 
   return (
@@ -55,8 +56,8 @@ const StyledPlayerCanvas = styled.div`
   border-radius: 0.5rem;
 
   canvas {
-    width: 100%;
-    height: 100%;
+    width: 100% !important;
+    height: 100% !important;
   }
 `
 

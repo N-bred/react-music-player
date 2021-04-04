@@ -5,7 +5,7 @@ import Menu from '../../icons/Menu'
 import MusicList from '../MusicList/MusicList'
 import Button from '../Button/Button'
 import UploadSongForm from '../UploadSongForm/UploadSongForm'
-import { useMusicList } from '../../context/MusicList'
+import { useMusicList } from '../../context/MusicList.context'
 
 function Sidebar(props) {
   const [isShowing, setIsShowing] = useState(false)

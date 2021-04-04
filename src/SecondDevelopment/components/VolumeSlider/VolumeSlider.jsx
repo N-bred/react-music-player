@@ -4,7 +4,7 @@ import { Mute, HighVolume, LowVolume } from '../../icons'
 import ButtonSvg from '../ButtonSvg/ButtonSvg'
 import Slider from '@material-ui/core/Slider'
 import { withStyles } from '@material-ui/core'
-import { ACTIONS, useMediaPlayer } from '../../context/MediaPlayer'
+import { MEDIA_PLAYER_ACTIONS as ACTIONS, useMediaPlayer } from '../../context/MediaPlayer.context'
 
 function VolumeSlider(props) {
   const mediaPlayer = useMediaPlayer()

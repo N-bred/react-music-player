@@ -4,8 +4,8 @@ import Sidebar from './components/Sidebar/Sidebar'
 import MediaPlayer from './components/MediaPlayer/MediaPlayer'
 import PlayerScene from './components/PlayerScene/PlayerScene'
 import PlayerCanvas from './components/PlayerCanvas/PlayerCanvas'
-import { MusicListProvider } from './context/MusicList'
-import { MediaPlayerProvider } from './context/MediaPlayer'
+import { MusicListProvider } from './context/MusicList.context'
+import { MediaPlayerProvider } from './context/MediaPlayer.context'
 import { MediaPlayerListControllerProvider } from './context/MediaPlayerListController'
 
 function App() {

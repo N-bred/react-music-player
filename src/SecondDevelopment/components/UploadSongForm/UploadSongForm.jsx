@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Button from '../Button/Button'
-import { ACTIONS, useMusicList } from '../../context/MusicList'
+import { MUSIC_LIST_ACTIONS as ACTIONS, useMusicList } from '../../context/MusicList.context'
 
 const validateInputs = (...args) => {
   if (args.some((arg) => arg === '')) return false

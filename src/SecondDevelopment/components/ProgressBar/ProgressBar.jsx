@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import styled from 'styled-components'
-import { ACTIONS, useMediaPlayer } from '../../context/MediaPlayer'
+import { MEDIA_PLAYER_ACTIONS as ACTIONS, useMediaPlayer } from '../../context/MediaPlayer.context'
 
 const secToMin = (s) => {
   if (Number.isNaN(s)) return false

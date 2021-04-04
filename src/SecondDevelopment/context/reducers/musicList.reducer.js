@@ -1,7 +1,4 @@
-import React, { createContext, useReducer, useContext } from 'react'
-import API from '../API/api'
-
-const ACTIONS = {
+const MUSIC_LIST_ACTIONS = {
   LOG: 'log',
   SET_CURRENT: 'set_current',
   SET_NEXT: 'set_next',
@@ -14,7 +11,7 @@ const ACTIONS = {
 const SET_CURRENT = (state, action) => ({
   ...state,
   current: action.payload.id,
-  current_song: state.API[action.payload.id], //state.API.find((song) => song.id === action.payload.id),
+  current_song: state.API[action.payload.id],
 })
 
 const SET_CURRENT_INDEX = (state, id) => ({
@@ -67,22 +64,22 @@ const ADD_SONG = (state, action) => {
   return { ...state }
 }
 
-function musicListReducer(state, action) {
+function MUSIC_LIST_REDUCER(state, action) {
   switch (action.type) {
-    case ACTIONS.LOG:
+    case MUSIC_LIST_ACTIONS.LOG:
       console.log(state)
       return state
-    case ACTIONS.SET_CURRENT:
+    case MUSIC_LIST_ACTIONS.SET_CURRENT:
       return SET_CURRENT(state, action)
-    case ACTIONS.SET_NEXT:
+    case MUSIC_LIST_ACTIONS.SET_NEXT:
       return SET_NEXT(state)
-    case ACTIONS.SET_PREVIOUS:
+    case MUSIC_LIST_ACTIONS.SET_PREVIOUS:
       return SET_PREVIOUS(state)
-    case ACTIONS.SET_REPEAT:
+    case MUSIC_LIST_ACTIONS.SET_REPEAT:
       return SET_REPEAT(state)
-    case ACTIONS.SET_RANDOM:
+    case MUSIC_LIST_ACTIONS.SET_RANDOM:
       return SET_RANDOM(state)
-    case ACTIONS.ADD_SONG:
+    case MUSIC_LIST_ACTIONS.ADD_SONG:
       return ADD_SONG(state, action)
 
     default: {
@@ -91,29 +88,4 @@ function musicListReducer(state, action) {
   }
 }
 
-const MusicListContext = createContext()
-
-function MusicListProvider({ children }) {
-  const [state, dispatch] = useReducer(musicListReducer, {
-    API,
-    current: 0,
-    current_song: API[0],
-    isRepeating: false,
-    isRandomized: false,
-    originalApi: [...API],
-  })
-
-  const value = { state, dispatch }
-
-  return <MusicListContext.Provider value={value}>{children}</MusicListContext.Provider>
-}
-
-function useMusicList() {
-  const context = useContext(MusicListContext)
-  if (context === undefined) {
-    throw new Error('useMusicList must be used within a MusicListProvider')
-  }
-  return context
-}
-
-export { MusicListProvider, useMusicList, ACTIONS }
+export { MUSIC_LIST_ACTIONS, MUSIC_LIST_REDUCER }
