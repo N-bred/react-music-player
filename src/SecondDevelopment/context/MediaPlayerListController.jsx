@@ -10,12 +10,18 @@ const MediaPlayerListControllerProvider = ({ children }) => {
 
   useEffect(() => {
     mediaPlayer.dispatch({ type: MEDIA_PLAYER_ACTIONS.SET_SONG, payload: { src: musicList.state.current_song.src } })
+
+    document.body.style.background = `url('${musicList?.state?.current_song?.img}') #131313 no-repeat center`
+    document.body.style.backgroundSize = 'cover'
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [musicList.state.current_song.src, musicList.state.changed])
 
   useEffect(() => {
     if (mediaPlayer.state.ended) {
       musicList.dispatch({ type: MUSIC_LIST_ACTIONS.SET_NEXT, payload: { repeating: musicList.repeat.repeating } })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mediaPlayer.state.ended])
 
   const value = {

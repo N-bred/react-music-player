@@ -7,7 +7,7 @@ function PlayerScene(props) {
 
 const StyledPlayerScene = styled.div`
   width: 100%;
-  background-color: tomato;
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;

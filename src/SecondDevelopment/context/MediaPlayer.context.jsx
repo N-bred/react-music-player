@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useReducer, useContext } from 'react'
+import React, { createContext, useReducer, useContext } from 'react'
 import { MEDIA_PLAYER_ACTIONS, MEDIA_PLAYER_REDUCER } from './reducers/mediaPlayer.reducer'
 
 const MediaPlayerContext = createContext()
@@ -8,6 +8,7 @@ const getAudio = () => {
   const audioCtx = new AudioContext()
   const analyser = audioCtx.createAnalyser()
   const source = audioCtx.createMediaElementSource(audio)
+  audio.pause()
   source.connect(analyser)
   analyser.connect(audioCtx.destination)
   const frequency = new Uint8Array(analyser.frequencyBinCount)
@@ -22,6 +23,7 @@ const MediaPlayerProvider = ({ children }) => {
     audio,
     currentTime: 0,
     ended: false,
+    started: false,
   })
 
   // RESUME CONTEXT EVENT

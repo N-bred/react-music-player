@@ -8,12 +8,16 @@ const MUSIC_LIST_ACTIONS = {
   ADD_SONG: 'add_song',
 }
 
-const SET_CURRENT = (state, action) => ({
-  ...state,
-  current: action.payload.id,
-  current_song: state.API[action.payload.id],
-  changed: action.payload.changed,
-})
+const SET_CURRENT = (state, action) => {
+  const song = state.API[action.payload.id]
+
+  return {
+    ...state,
+    current: action.payload.id,
+    current_song: song,
+    changed: action.payload.changed,
+  }
+}
 
 const SET_NEXT = (state, action) => {
   if (action.payload.repeating) return SET_CURRENT(state, { payload: { id: state.current, changed: !state.changed } })
@@ -67,6 +71,7 @@ const ADD_SONG = (state, action) => {
   const { value } = action
   value.id = state.API.length
   state.API.push(value)
+  state.originalApi.push(value)
   return { ...state }
 }
 
