@@ -6,7 +6,6 @@ import { useMediaPlayer } from '../../context/MediaPlayer.context'
 function PlayerScene(props) {
   const { analyser, frequency } = useMediaPlayer()
   const [bars, setBars] = useState([])
-  const [canceled, setCanceled] = useState(false)
   const requestRef = useRef(null)
 
   const request = () => {

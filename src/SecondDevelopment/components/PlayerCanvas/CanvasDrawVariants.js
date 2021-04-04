@@ -1,5 +1,5 @@
-const CanvasDrawVariants = (canvas, size) => {
-  const drawMainCircle = (radius, fillStyle = 'black', strokeStyle = '#666', lineWidth = 5) => {
+const CanvasDrawVariants = (canvas, size, limit) => {
+  const drawMainCircle = (radius, fillStyle = 'black', strokeStyle = '#000', lineWidth = 5) => {
     const centerX = size.width / 2
     const centerY = size.height / 2
     canvas.drawCircle(centerX, centerY, radius, fillStyle, strokeStyle, lineWidth)
@@ -11,7 +11,6 @@ const CanvasDrawVariants = (canvas, size) => {
     const centerY = size.height / 2
     const lineWidth = barWidth
     const rads = (Math.PI * 2) / bars
-
     const x = centerX + Math.cos(rads * i) * (radius + lineWidth)
     const y = centerY + Math.sin(rads * i) * (radius + lineWidth)
     const endX = centerX + Math.cos(rads * i) * (radius + height)
@@ -20,25 +19,21 @@ const CanvasDrawVariants = (canvas, size) => {
     canvas.drawLine(color, lineWidth, 'round', x, y, endX, endY)
   }
 
-  const drawCircle = (frequency, radius, bars) => {
-    frequency.slice(0).forEach((freq, i) => {
-      drawLine({ i, bars, height: freq, radius })
+  const drawCircle = (frequency, radius, bars, colors, barWidth) => {
+    let idx = 0
+    frequency.forEach((freq, i) => {
+      if (i >= limit * (1 + idx)) {
+        idx++
+      }
+      drawLine({ i, bars, height: freq, radius }, colors[idx], barWidth)
     })
   }
 
-  const drawBars = (frequency, barWidth) => {
+  const drawBars = (frequency, barWidth, color) => {
     frequency.slice(0, parseInt(size.width / barWidth)).forEach((freq, i) => {
-      canvas.rect('#ffffff', barWidth * i * 1, size.height, barWidth, -freq * 1.5)
+      canvas.rect(color, barWidth * i * 1, size.height, barWidth, -freq * 1.5)
       canvas.stroke('#000')
     })
-  }
-
-  const drawBar = (cond) => {
-    if (cond) {
-      canvas.drawLine('#fff', 25, 'round', 0, 0, size.width, size.height)
-    } else {
-      canvas.drawLine('#fff', 25, 'round', 0, size.height, size.width, 0)
-    }
   }
 
   return {
@@ -46,7 +41,6 @@ const CanvasDrawVariants = (canvas, size) => {
     drawLine,
     drawCircle,
     drawBars,
-    drawBar,
   }
 }
 

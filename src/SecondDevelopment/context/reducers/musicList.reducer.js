@@ -1,3 +1,4 @@
+import { RandomizeArray } from '../../utils/RandomizeArray'
 const MUSIC_LIST_ACTIONS = {
   LOG: 'log',
   SET_CURRENT: 'set_current',
@@ -58,7 +59,7 @@ const SET_RANDOM = (state) => {
       isRandomized: false,
       current: state.originalApi.findIndex((song) => song.id === state.current_song.id),
     }
-  const random = [...state.API].sort(() => 0.5 - Math.random())
+  const random = RandomizeArray(state.API)
   return {
     ...state,
     API: random,
