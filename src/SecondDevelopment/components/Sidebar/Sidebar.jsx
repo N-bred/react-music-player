@@ -31,7 +31,7 @@ function Sidebar(props) {
         <UploadSongForm handleInputShowing={handleInputButtonClick} />
       ) : (
         <div>
-          <MusicList dispatcher={musicList.dispatch} list={musicList.state.API} current={musicList.state.current} />
+          <MusicList dispatcher={musicList.dispatch} list={musicList.state.API} current={musicList.state.current_song} />
         </div>
       )}
     </StyledSidebar>

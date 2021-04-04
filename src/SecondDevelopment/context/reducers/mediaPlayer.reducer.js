@@ -30,9 +30,7 @@ function SET_SONG(state, action) {
   const newState = { ...state, ended: false }
   newState.audio.src = action.payload.src
 
-  if (action.payload.playing) {
-    newState.audio.play()
-  }
+  newState.audio.play()
 
   return { ...newState, started: true }
 }

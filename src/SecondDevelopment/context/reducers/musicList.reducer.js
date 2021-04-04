@@ -11,7 +11,7 @@ const MUSIC_LIST_ACTIONS = {
 const SET_CURRENT = (state, action) => ({
   ...state,
   current: action.payload.id,
-  current_song: state.API[action.payload.id],
+  current_song: state.API.find((song) => song.id === action.payload.id),
 })
 
 const SET_CURRENT_INDEX = (state, id) => ({

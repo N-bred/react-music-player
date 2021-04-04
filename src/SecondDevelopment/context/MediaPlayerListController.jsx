@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react'
+import React, { createContext, useContext, useEffect } from 'react'
 import { MUSIC_LIST_ACTIONS, useMusicList } from './MusicList.context'
 import { MEDIA_PLAYER_ACTIONS, useMediaPlayer } from './MediaPlayer.context'
 
@@ -7,6 +7,10 @@ const MediaPlayerListController = createContext()
 const MediaPlayerListControllerProvider = ({ children }) => {
   const musicList = useMusicList()
   const mediaPlayer = useMediaPlayer()
+
+  useEffect(() => {
+    mediaPlayer.dispatch({ type: MEDIA_PLAYER_ACTIONS.SET_SONG, payload: { src: musicList.state.current_song.src } })
+  }, [musicList.state.current_song.src])
 
   const value = {
     handlePlayButton: () => mediaPlayer.dispatch({ type: MEDIA_PLAYER_ACTIONS.PLAY }),
