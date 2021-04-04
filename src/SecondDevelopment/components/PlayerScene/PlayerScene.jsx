@@ -1,8 +1,29 @@
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
+import PlayerCanvas from '../PlayerCanvas/PlayerCanvas'
+import { useMediaPlayer } from '../../context/MediaPlayer.context'
 
 function PlayerScene(props) {
-  return <StyledPlayerScene className={props.className}>{props.children}</StyledPlayerScene>
+  const { analyser, frequency } = useMediaPlayer()
+  const [bars, setBars] = useState([])
+  const [canceled, setCanceled] = useState(false)
+  const requestRef = useRef(null)
+
+  const request = () => {
+    analyser.getByteFrequencyData(frequency)
+    setBars(frequency)
+    requestRef.current = requestAnimationFrame(request)
+  }
+
+  useEffect(() => {
+    requestRef.current = requestAnimationFrame(request)
+  }, [])
+
+  return (
+    <StyledPlayerScene className={props.className}>
+      <PlayerCanvas bars={bars} />
+    </StyledPlayerScene>
+  )
 }
 
 const StyledPlayerScene = styled.div`

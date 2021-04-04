@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react'
 import styled from 'styled-components'
-import { useMediaPlayer } from '../../context/MediaPlayer.context'
 import CanvasLib from './CanvasLib'
 import CanvasDrawVariants from './CanvasDrawVariants'
 import Switch from '../Switch/Switch'
@@ -9,8 +8,7 @@ const BAR_WIDTH = 1
 const RADIUS = 50
 const BARS = 360
 
-function PlayerCanvas() {
-  const { analyser, frequency } = useMediaPlayer()
+function PlayerCanvas({ bars }) {
   const canvasRef = useRef(null)
   const parentRef = useRef(null)
   const requestRef = useRef(null)
@@ -34,32 +32,21 @@ function PlayerCanvas() {
 
   const drawCanvas = () => {
     canvasLib.current.bg('#000')
-    canvasDrawVariants.current.drawBar(drawMode === 'bars')
+
+    if (drawMode === 'bars') {
+      canvasDrawVariants.current.drawBars(bars, BAR_WIDTH)
+    } else {
+      canvasDrawVariants.current.drawMainCircle(RADIUS)
+      canvasDrawVariants.current.drawCircle(bars, RADIUS, BARS)
+    }
+
     requestRef.current = requestAnimationFrame(drawCanvas)
   }
 
   useEffect(() => {
     cancelAnimationFrame(requestRef.current)
     requestRef.current = requestAnimationFrame(drawCanvas)
-  }, [drawMode])
-
-  // const drawCanvas = () => {
-  //   canvasLib.current.bg('#000')
-
-  //   // CALL Analyser
-  //   analyser.getByteFrequencyData(frequency)
-  //   canvasDrawVariants.current.drawBars(frequency, BAR_WIDTH)
-
-  //   // if (drawMode === 'bars') {
-  //   //   // Draw Bars
-  //   //   canvasDrawVariants.current.drawBars(frequency, BAR_WIDTH)
-  //   // } else {
-  //   //   // Draw Circle
-  //   //   canvasDrawVariants.current.drawMainCircle(RADIUS)
-  //   //   canvasDrawVariants.current.drawCircle(frequency, RADIUS, BARS)
-  //   // }
-  //   requestRef.current = requestAnimationFrame(drawCanvas)
-  // }
+  }, [drawMode, drawCanvas])
 
   return (
     <StyledPlayerCanvas ref={parentRef}>

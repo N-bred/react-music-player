@@ -16,9 +16,8 @@ function App() {
           <MediaPlayerListControllerProvider>
             <Ui>
               <Sidebar className='sidebar' />
-              <PlayerScene className='player-scene'>
-                <PlayerCanvas />
-              </PlayerScene>
+              <PlayerScene className='player-scene' />
+
               <MediaPlayer className='media-player' />
             </Ui>
           </MediaPlayerListControllerProvider>
