@@ -44,7 +44,7 @@ function MediaPlayer(props) {
           <ButtonSvg rotate={true} onClick={handleNextButton}>
             <Previous />
           </ButtonSvg>
-          <ButtonSvg onClick={handleRepeatButton} isActive={musicList.state.isRepeating}>
+          <ButtonSvg onClick={handleRepeatButton} isActive={musicList.repeat.repeating}>
             <Repeat />
           </ButtonSvg>
         </div>

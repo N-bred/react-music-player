@@ -11,17 +11,12 @@ const MUSIC_LIST_ACTIONS = {
 const SET_CURRENT = (state, action) => ({
   ...state,
   current: action.payload.id,
-  current_song: state.API.find((song) => song.id === action.payload.id),
+  current_song: state.API[action.payload.id],
+  changed: action.payload.changed,
 })
 
-const SET_CURRENT_INDEX = (state, id) => ({
-  ...state,
-  current: id,
-  current_song: state.API[id],
-})
-
-const SET_NEXT = (state) => {
-  if (state.isRepeating) return SET_CURRENT(state, { payload: { id: state.current } })
+const SET_NEXT = (state, action) => {
+  if (action.payload.repeating) return SET_CURRENT(state, { payload: { id: state.current, changed: !state.changed } })
   const nextIdx = state.current + 1
   let idx = 0
 
@@ -52,9 +47,20 @@ const SET_PREVIOUS = (state) => {
 const SET_REPEAT = (state) => ({ ...state, isRepeating: !state.isRepeating })
 
 const SET_RANDOM = (state) => {
-  if (state.isRandomized) return SET_CURRENT_INDEX({ ...state, API: [...state.originalApi], isRandomized: false }, 0)
+  if (state.isRandomized)
+    return {
+      ...state,
+      API: [...state.originalApi],
+      isRandomized: false,
+      current: state.originalApi.findIndex((song) => song.id === state.current_song.id),
+    }
   const random = [...state.API].sort(() => 0.5 - Math.random())
-  return SET_CURRENT_INDEX({ ...state, isRandomized: true, API: random }, 0)
+  return {
+    ...state,
+    API: random,
+    isRandomized: true,
+    current: random.findIndex((song) => song.id === state.current_song.id),
+  }
 }
 
 const ADD_SONG = (state, action) => {
@@ -72,7 +78,7 @@ function MUSIC_LIST_REDUCER(state, action) {
     case MUSIC_LIST_ACTIONS.SET_CURRENT:
       return SET_CURRENT(state, action)
     case MUSIC_LIST_ACTIONS.SET_NEXT:
-      return SET_NEXT(state)
+      return SET_NEXT(state, action)
     case MUSIC_LIST_ACTIONS.SET_PREVIOUS:
       return SET_PREVIOUS(state)
     case MUSIC_LIST_ACTIONS.SET_REPEAT:

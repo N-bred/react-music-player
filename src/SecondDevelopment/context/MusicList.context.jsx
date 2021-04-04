@@ -1,4 +1,4 @@
-import React, { createContext, useReducer, useContext } from 'react'
+import React, { createContext, useReducer, useContext, useState } from 'react'
 import API from '../API/api'
 import { MUSIC_LIST_ACTIONS, MUSIC_LIST_REDUCER } from './reducers/musicList.reducer'
 
@@ -12,9 +12,12 @@ function MusicListProvider({ children }) {
     isRepeating: false,
     isRandomized: false,
     originalApi: [...API],
+    changed: false,
   })
 
-  const value = { state, dispatch }
+  const [repeating, setRepeating] = useState(false)
+
+  const value = { state, dispatch, repeat: { repeating, setRepeating } }
 
   return <MusicListContext.Provider value={value}>{children}</MusicListContext.Provider>
 }

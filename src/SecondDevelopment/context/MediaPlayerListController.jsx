@@ -10,7 +10,13 @@ const MediaPlayerListControllerProvider = ({ children }) => {
 
   useEffect(() => {
     mediaPlayer.dispatch({ type: MEDIA_PLAYER_ACTIONS.SET_SONG, payload: { src: musicList.state.current_song.src } })
-  }, [musicList.state.current_song.src])
+  }, [musicList.state.current_song.src, musicList.state.changed])
+
+  useEffect(() => {
+    if (mediaPlayer.state.ended) {
+      musicList.dispatch({ type: MUSIC_LIST_ACTIONS.SET_NEXT, payload: { repeating: musicList.repeat.repeating } })
+    }
+  }, [mediaPlayer.state.ended])
 
   const value = {
     handlePlayButton: () => mediaPlayer.dispatch({ type: MEDIA_PLAYER_ACTIONS.PLAY }),
@@ -18,8 +24,9 @@ const MediaPlayerListControllerProvider = ({ children }) => {
     handleMusicListItemChange: (payload) => musicList.dispatch({ type: MUSIC_LIST_ACTIONS.SET_CURRENT, payload }),
     handleRandomizeButton: () => musicList.dispatch({ type: MUSIC_LIST_ACTIONS.SET_RANDOM }),
     handlePreviousButton: () => musicList.dispatch({ type: MUSIC_LIST_ACTIONS.SET_PREVIOUS }),
-    handleNextButton: () => musicList.dispatch({ type: MUSIC_LIST_ACTIONS.SET_NEXT }),
-    handleRepeatButton: () => musicList.dispatch({ type: MUSIC_LIST_ACTIONS.SET_REPEAT }),
+    handleNextButton: () =>
+      musicList.dispatch({ type: MUSIC_LIST_ACTIONS.SET_NEXT, payload: { repeating: musicList.repeat.repeating } }),
+    handleRepeatButton: () => musicList.repeat.setRepeating(!musicList.repeat.repeating),
   }
 
   return <MediaPlayerListController.Provider value={value}>{children}</MediaPlayerListController.Provider>
