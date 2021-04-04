@@ -16,6 +16,7 @@ const GlobalStyles = createGlobalStyle`
 
     body {
         font-size: 1.6rem;
+        overflow: hidden;
         font-family: sans-serif;
     }
 

@@ -1,17 +1,12 @@
 import React, { useRef, useEffect, useState } from 'react'
-import styled from 'styled-components'
+import styled, { keyframes, css } from 'styled-components'
 import CanvasLib from './CanvasLib'
 import CanvasDrawVariants from './CanvasDrawVariants'
 import Switch from '../Switch/Switch'
 import { ChooseRandomArrayElement } from '../../utils/ChooseRandomArrayElement'
 import { RandomizeArray } from '../../utils/RandomizeArray'
 import { useMusicList } from '../../context/MusicList.context'
-
-const BAR_WIDTH = 2
-const RADIUS = 50
-const BARS = 360
-const COLOR_SCHEME = ['#ff2a6d', '#05e9d8', '#7700a6', '#ff124f', '#ff00a0', '#d1f7ff']
-const LIMIT = [90, 180, 270, 360]
+import { BAR_WIDTH, BARS, COLOR_SCHEME, LIMIT, LINE_WIDTH, RADIUS } from './CanvasConfig'
 
 function PlayerCanvas({ bars }) {
   const musicList = useMusicList()
@@ -56,7 +51,7 @@ function PlayerCanvas({ bars }) {
     if (drawMode === 'bars') {
       canvasDrawVariants.current.drawBars(bars, BAR_WIDTH, colors.bars)
     } else {
-      canvasDrawVariants.current.drawCircle(bars, RADIUS, BARS, colors.circle, BAR_WIDTH, colors.limit)
+      canvasDrawVariants.current.drawCircle(bars, RADIUS, BARS, colors.circle, LINE_WIDTH, colors.limit)
       canvasDrawVariants.current.drawMainCircle(RADIUS, colors.mainCircle, '#000')
     }
     requestRef.current = requestAnimationFrame(drawCanvas)
@@ -69,7 +64,7 @@ function PlayerCanvas({ bars }) {
   }, [drawMode, drawCanvas])
 
   return (
-    <StyledPlayerCanvas ref={parentRef}>
+    <StyledPlayerCanvas ref={parentRef} mode={drawMode}>
       <div className='switch-container'>
         <Switch onChange={handleDrawMode} text={drawMode} />
       </div>
@@ -79,18 +74,40 @@ function PlayerCanvas({ bars }) {
   )
 }
 
+const rotate = keyframes`
+
+  0% {
+    transform: rotate(0deg) scale(.8);
+  }
+
+  50% {
+    transform: rotate(180deg) scale(1);
+  }
+  100% {
+    transform: rotate(360deg) scale(.8);
+  }
+ 
+`
+
 const StyledPlayerCanvas = styled.div`
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.6);
   position: relative;
   padding: 2rem;
   width: 90%;
   height: 70%;
   border-radius: 0.5rem;
+  /* overflow: hidden; */
 
   canvas {
     width: 100% !important;
     height: 100% !important;
     mix-blend-mode: screen;
+    animation: ${(props) =>
+      props.mode === 'circle'
+        ? css`
+            ${rotate} 15s linear infinite
+          `
+        : 'none'};
   }
 
   .switch-container {

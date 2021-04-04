@@ -24,18 +24,14 @@ const CanvasDrawVariants = (canvas, size) => {
     frequency.forEach((freq, i) => {
       if (i >= limit * (1 + idx)) {
         idx++
-        if (idx > colors.length) {
-          idx = 0
-        }
       }
       drawLine({ i, bars, height: freq, radius }, colors[idx], barWidth)
     })
   }
 
   const drawBars = (frequency, barWidth, color) => {
-    frequency.slice(0, parseInt(size.width / barWidth)).forEach((freq, i) => {
-      canvas.rect(color, barWidth * i * 1, size.height, barWidth, -freq * 1.5)
-      canvas.stroke('#000')
+    frequency.forEach((freq, i) => {
+      canvas.rect(color, barWidth * i, size.height, barWidth, -freq * 1.5)
     })
   }
 
