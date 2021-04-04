@@ -16,6 +16,7 @@ function PlayerScene(props) {
 
   useEffect(() => {
     requestRef.current = requestAnimationFrame(request)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

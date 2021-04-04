@@ -11,9 +11,6 @@ const MediaPlayerListControllerProvider = ({ children }) => {
   useEffect(() => {
     mediaPlayer.dispatch({ type: MEDIA_PLAYER_ACTIONS.SET_SONG, payload: { src: musicList.state.current_song.src } })
 
-    document.body.style.background = `url('${musicList?.state?.current_song?.img}') #131313 no-repeat center`
-    document.body.style.backgroundSize = 'cover'
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [musicList.state.current_song.src, musicList.state.changed])
 

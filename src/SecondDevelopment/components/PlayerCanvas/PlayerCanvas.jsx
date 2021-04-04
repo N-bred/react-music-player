@@ -39,6 +39,7 @@ function PlayerCanvas({ bars }) {
 
   useEffect(() => {
     handleSetColors()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [musicList.state.current_song.src, musicList.state.changed])
 
   const handleSetColors = () => {
@@ -64,6 +65,7 @@ function PlayerCanvas({ bars }) {
   useEffect(() => {
     cancelAnimationFrame(requestRef.current)
     requestRef.current = requestAnimationFrame(drawCanvas)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [drawMode, drawCanvas])
 
   return (

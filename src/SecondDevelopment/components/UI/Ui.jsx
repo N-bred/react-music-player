@@ -1,8 +1,18 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
+import { useMusicList } from '../../context/MusicList.context'
 
 function Ui(props) {
-  return <GridUi>{props.children}</GridUi>
+  const musicList = useMusicList()
+  const UiRef = useRef(null)
+  useEffect(() => {
+    if (UiRef.current) {
+      UiRef.current.style.background = `url('${musicList?.state?.current_song?.img}') #131313 no-repeat center`
+      UiRef.current.style.backgroundSize = 'cover'
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [musicList.state.current_song.src, musicList.state.changed])
+  return <GridUi ref={UiRef}>{props.children}</GridUi>
 }
 
 const GridUi = styled.div`

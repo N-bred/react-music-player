@@ -1,4 +1,4 @@
-import React, { createContext, useReducer, useContext, useState, useEffect } from 'react'
+import React, { createContext, useReducer, useContext, useState } from 'react'
 import API from '../API/api'
 import { MUSIC_LIST_ACTIONS, MUSIC_LIST_REDUCER } from './reducers/musicList.reducer'
 
