@@ -3,6 +3,8 @@ import { MEDIA_PLAYER_ACTIONS, MEDIA_PLAYER_REDUCER } from './reducers/mediaPlay
 
 const MediaPlayerContext = createContext()
 
+let frequency = []
+
 const getAudio = () => {
   const audio = new Audio()
   const audioCtx = new AudioContext()
@@ -11,13 +13,13 @@ const getAudio = () => {
   audio.pause()
   source.connect(analyser)
   analyser.connect(audioCtx.destination)
-  const frequency = new Uint8Array(analyser.frequencyBinCount)
-  return { audio, analyser, frequency, audioCtx }
+  frequency = new Uint8Array(analyser.frequencyBinCount)
+  return { audio, analyser, audioCtx, source }
 }
 
 const MediaPlayerProvider = ({ children }) => {
   // Audio Initalization With AudioContext
-  const { audio, analyser, frequency, audioCtx } = getAudio()
+  const { audio, analyser, audioCtx, source } = getAudio()
 
   const [state, dispatch] = useReducer(MEDIA_PLAYER_REDUCER, {
     audio,
@@ -44,7 +46,7 @@ const MediaPlayerProvider = ({ children }) => {
     dispatch({ type: MEDIA_PLAYER_ACTIONS.SET_ENDED })
   })
 
-  const value = { state, dispatch, frequency, analyser }
+  const value = { state, dispatch, frequency, audio, audioCtx, analyser, source }
   return <MediaPlayerContext.Provider value={value}>{children}</MediaPlayerContext.Provider>
 }
 

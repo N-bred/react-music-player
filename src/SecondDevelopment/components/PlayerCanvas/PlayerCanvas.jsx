@@ -10,13 +10,13 @@ const RADIUS = 50
 const BARS = 360
 
 function PlayerCanvas() {
-  const { frequency, analyser } = useMediaPlayer()
+  const { analyser, frequency } = useMediaPlayer()
   const canvasRef = useRef(null)
   const parentRef = useRef(null)
   const requestRef = useRef(null)
   const canvasLib = useRef(null)
   const canvasDrawVariants = useRef(null)
-  const [drawMode, setDrawMode] = useState('bars')
+  const [drawMode, setDrawMode] = useState('circle')
 
   const handleDrawMode = () => {
     if (drawMode === 'bars') return setDrawMode('circle')
@@ -28,29 +28,38 @@ function PlayerCanvas() {
     canvasLib.current = CanvasLib(canvasRef.current, { width, height })
     canvasDrawVariants.current = CanvasDrawVariants(canvasLib.current, { width, height })
     canvasLib.current.fixDpi()
-    requestRef.current = requestAnimationFrame(drawCanvas)
-    return () => cancelAnimationFrame(requestRef.current)
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const drawCanvas = () => {
-    // canvasLib.current.clearRect(0, 0, 10000, 10000)
     canvasLib.current.bg('#000')
-
-    // CALL Analyser
-    analyser.getByteFrequencyData(frequency)
-
-    if (drawMode === 'bars') {
-      // Draw Bars
-      canvasDrawVariants.current.drawBars(frequency, BAR_WIDTH)
-    } else {
-      // Draw Circle
-      canvasDrawVariants.current.drawMainCircle(RADIUS)
-      canvasDrawVariants.current.drawCircle(frequency, RADIUS, BARS)
-    }
-
+    canvasDrawVariants.current.drawBar(drawMode === 'bars')
     requestRef.current = requestAnimationFrame(drawCanvas)
   }
+
+  useEffect(() => {
+    cancelAnimationFrame(requestRef.current)
+    requestRef.current = requestAnimationFrame(drawCanvas)
+  }, [drawMode])
+
+  // const drawCanvas = () => {
+  //   canvasLib.current.bg('#000')
+
+  //   // CALL Analyser
+  //   analyser.getByteFrequencyData(frequency)
+  //   canvasDrawVariants.current.drawBars(frequency, BAR_WIDTH)
+
+  //   // if (drawMode === 'bars') {
+  //   //   // Draw Bars
+  //   //   canvasDrawVariants.current.drawBars(frequency, BAR_WIDTH)
+  //   // } else {
+  //   //   // Draw Circle
+  //   //   canvasDrawVariants.current.drawMainCircle(RADIUS)
+  //   //   canvasDrawVariants.current.drawCircle(frequency, RADIUS, BARS)
+  //   // }
+  //   requestRef.current = requestAnimationFrame(drawCanvas)
+  // }
 
   return (
     <StyledPlayerCanvas ref={parentRef}>

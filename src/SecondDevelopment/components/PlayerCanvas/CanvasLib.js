@@ -2,14 +2,8 @@ const CanvasLib = (canvas, size) => {
   const ctx = canvas.getContext('2d')
 
   const fixDpi = () => {
-    const dpi = window.devicePixelRatio
-    const style = {
-      height: () => getComputedStyle(canvas).getPropertyValue('height').slice(0, -2),
-      width: () => getComputedStyle(canvas).getPropertyValue('width').slice(0, -2),
-    }
-
-    canvas.setAttribute('width', style.width() * dpi)
-    canvas.setAttribute('height', style.height() * dpi)
+    canvas.setAttribute('width', size.width)
+    canvas.setAttribute('height', size.height)
   }
 
   const bg = (color) => {

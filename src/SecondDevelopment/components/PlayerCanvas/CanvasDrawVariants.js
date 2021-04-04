@@ -33,11 +33,20 @@ const CanvasDrawVariants = (canvas, size) => {
     })
   }
 
+  const drawBar = (cond) => {
+    if (cond) {
+      canvas.drawLine('#fff', 25, 'round', 0, 0, size.width, size.height)
+    } else {
+      canvas.drawLine('#fff', 25, 'round', 0, size.height, size.width, 0)
+    }
+  }
+
   return {
     drawMainCircle,
     drawLine,
     drawCircle,
     drawBars,
+    drawBar,
   }
 }
 
