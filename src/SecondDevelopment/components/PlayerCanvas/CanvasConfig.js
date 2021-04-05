@@ -3,16 +3,16 @@ export const LINE_WIDTH = 2
 export const RADIUS = 50
 export const BARS = 360
 export const COLOR_SCHEME = [
-  '#ff2a6d',
-  '#05e9d8',
-  '#7700a6',
+  '#de004e',
+  '#860029',
   '#ff124f',
   '#ff00a0',
-  '#d1f7ff',
-  '#860029',
-  '#321450',
-  '#fe75fe',
-  '#defe47',
-  '#65dc98',
+  '#7a04eb',
+  '#73fffe',
+  '#7700a6',
+  '#fe00fe',
+  '#00b3fe',
+  '#ff2a6d',
+  '#05d9e8',
 ]
 export const LIMIT = [90, 120, 180, 230, 270, 360]

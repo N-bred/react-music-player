@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import PlayerCanvas from '../PlayerCanvas/PlayerCanvas'
 import { useMediaPlayer } from '../../context/MediaPlayer.context'
 
-function PlayerScene(props) {
+const PlayerScene = () => {
   const { analyser, frequency } = useMediaPlayer()
   const [bars, setBars] = useState([])
   const requestRef = useRef(null)
@@ -20,7 +20,7 @@ function PlayerScene(props) {
   }, [])
 
   return (
-    <StyledPlayerScene className={props.className}>
+    <StyledPlayerScene className='player-scene'>
       <PlayerCanvas bars={bars} />
     </StyledPlayerScene>
   )

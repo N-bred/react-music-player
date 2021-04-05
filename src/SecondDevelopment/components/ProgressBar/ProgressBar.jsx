@@ -6,8 +6,7 @@ const secToMin = (s) => {
   if (Number.isNaN(s)) return false
   return (s - (s %= 60)) / 60 + (9 < s ? ':' : ':0') + s
 }
-
-function ProgressBar() {
+const ProgressBar = () => {
   const mediaPlayer = useMediaPlayer()
   const barRef = useRef()
   const percentage = parseInt((mediaPlayer.state.currentTime / mediaPlayer.state.audio.duration) * 100) || 0
@@ -29,7 +28,7 @@ function ProgressBar() {
         </div>
       </div>
 
-      <div className='total-time'>{secToMin(parseInt(mediaPlayer.state.audio.duration)) || '00:00'}</div>
+      <div className='total-time'>{secToMin(parseInt(mediaPlayer.state.audio.duration)) || '0:00'}</div>
     </StyledProgressBar>
   )
 }

@@ -6,14 +6,15 @@ import Slider from '@material-ui/core/Slider'
 import { withStyles } from '@material-ui/core'
 import { MEDIA_PLAYER_ACTIONS as ACTIONS, useMediaPlayer } from '../../context/MediaPlayer.context'
 
-function VolumeSlider(props) {
+const VolumeSlider = ({ className }) => {
   const mediaPlayer = useMediaPlayer()
 
   const handleChange = (event, newValue) => {
     mediaPlayer.dispatch({ type: ACTIONS.SET_VOLUME, payload: { volume: newValue / 100 } })
   }
+
   return (
-    <StyledVolumeSlider className={props.className}>
+    <StyledVolumeSlider className={className}>
       <div className='value'>{parseInt(mediaPlayer.state.audio.volume * 100)}%</div>
 
       <div className='slider'>

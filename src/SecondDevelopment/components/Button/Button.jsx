@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
 
-function Button(props) {
+const Button = ({ disabled, onClick, children }) => {
   return (
-    <StyledButton disabled={props.disabled} onClick={props.onClick}>
-      {props.children}
+    <StyledButton disabled={disabled} onClick={onClick}>
+      {children}
     </StyledButton>
   )
 }

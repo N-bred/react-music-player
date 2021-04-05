@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import styled from 'styled-components'
 import { useMusicList } from '../../context/MusicList.context'
 
-function Ui(props) {
+const Ui = ({ children }) => {
   const musicList = useMusicList()
   const UiRef = useRef(null)
   useEffect(() => {
@@ -12,7 +12,7 @@ function Ui(props) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [musicList.state.current_song.src, musicList.state.changed])
-  return <GridUi ref={UiRef}>{props.children}</GridUi>
+  return <GridUi ref={UiRef}>{children}</GridUi>
 }
 
 const GridUi = styled.div`

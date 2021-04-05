@@ -8,7 +8,7 @@ const validateInputs = (...args) => {
   return true
 }
 
-function UploadSongForm(props) {
+const UploadSongForm = ({ handleInputShowing }) => {
   const musicList = useMusicList()
   const [name, setName] = useState('')
   const [artist, setArtist] = useState('')
@@ -61,7 +61,7 @@ function UploadSongForm(props) {
 
     musicList.dispatch({ type: ACTIONS.ADD_SONG, value: newSong })
     setBtnDisabled(true)
-    props.handleInputShowing()
+    handleInputShowing()
   }
 
   return (

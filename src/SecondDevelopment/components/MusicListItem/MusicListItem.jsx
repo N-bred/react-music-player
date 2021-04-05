@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-function MusicListItem(props) {
+const MusicListItem = (props) => {
   return <StyledButton {...props}>{props.children}</StyledButton>
 }
 

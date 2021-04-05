@@ -26,7 +26,7 @@ function PlayerCanvas({ bars }) {
   useEffect(() => {
     const { width, height } = parentRef.current.getBoundingClientRect()
     canvasLib.current = CanvasLib(canvasRef.current, { width, height })
-    canvasDrawVariants.current = CanvasDrawVariants(canvasLib.current, { width, height })
+    canvasDrawVariants.current = CanvasDrawVariants(canvasLib.current, { width, height }, (Math.PI * 2) / BARS)
     canvasLib.current.fixDpi()
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -45,13 +45,13 @@ function PlayerCanvas({ bars }) {
       limit: ChooseRandomArrayElement(LIMIT),
     })
   }
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const drawCanvas = () => {
     canvasLib.current.bg('#000')
     if (drawMode === 'bars') {
       canvasDrawVariants.current.drawBars(bars, BAR_WIDTH, colors.bars)
     } else {
-      canvasDrawVariants.current.drawCircle(bars, RADIUS, BARS, colors.circle, LINE_WIDTH, colors.limit)
+      canvasDrawVariants.current.drawCircle(bars, RADIUS, colors.circle, LINE_WIDTH, colors.limit)
       canvasDrawVariants.current.drawMainCircle(RADIUS, colors.mainCircle, '#000')
     }
     requestRef.current = requestAnimationFrame(drawCanvas)
@@ -66,7 +66,6 @@ function PlayerCanvas({ bars }) {
   return (
     <StyledPlayerCanvas ref={parentRef} mode={drawMode}>
       <SwitchContainer handleDrawMode={handleDrawMode} drawMode={drawMode} />
-
       <canvas ref={canvasRef} />
     </StyledPlayerCanvas>
   )
@@ -93,7 +92,6 @@ const StyledPlayerCanvas = styled.div`
   width: 90%;
   height: 80%;
   border-radius: 0.5rem;
-  /* overflow: hidden; */
 
   canvas {
     width: 100% !important;

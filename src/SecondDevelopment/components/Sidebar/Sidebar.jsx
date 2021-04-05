@@ -7,7 +7,7 @@ import Button from '../Button/Button'
 import UploadSongForm from '../UploadSongForm/UploadSongForm'
 import { useMusicList } from '../../context/MusicList.context'
 
-function Sidebar(props) {
+const Sidebar = () => {
   const [isShowing, setIsShowing] = useState(false)
   const [isInputShowing, setIsInputShowing] = useState(false)
   const musicList = useMusicList()
@@ -20,7 +20,7 @@ function Sidebar(props) {
   }
 
   return (
-    <StyledSidebar {...props} isShowing={isShowing}>
+    <StyledSidebar className='sidebar' isShowing={isShowing}>
       <ButtonSvg className='change-button' onClick={handleShowButtonClick}>
         <Menu />
       </ButtonSvg>

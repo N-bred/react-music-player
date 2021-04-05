@@ -1,4 +1,4 @@
-const CanvasDrawVariants = (canvas, size) => {
+const CanvasDrawVariants = (canvas, size, rads) => {
   let mult = 1
 
   if (size.width <= 400) {
@@ -9,34 +9,27 @@ const CanvasDrawVariants = (canvas, size) => {
     mult = 0.9
   }
 
+  const centerX = size.width / 2
+  const centerY = size.height / 2
+
   const drawMainCircle = (radius, fillStyle = 'black', strokeStyle = '#000', lineWidth = 8) => {
-    const centerX = size.width / 2
-    const centerY = size.height / 2
     canvas.drawCircle(centerX, centerY, radius, fillStyle, strokeStyle, lineWidth)
   }
 
   const drawLine = (opts, color = '#fff', barWidth = 1) => {
-    const { i, bars, height, radius } = opts
-    const centerX = size.width / 2
-    const centerY = size.height / 2
-    const lineWidth = barWidth
-    const rads = (Math.PI * 2) / bars
-    const x = centerX + Math.cos(rads * i) * (radius + lineWidth)
-    const y = centerY + Math.sin(rads * i) * (radius + lineWidth)
+    const { i, height, radius } = opts
+    const x = centerX + Math.cos(rads * i) * (radius + barWidth)
+    const y = centerY + Math.sin(rads * i) * (radius + barWidth)
     const endX = centerX + Math.cos(rads * i) * (radius + height)
     const endY = parseInt(centerY + Math.sin(rads * i) * (radius + height))
-
-    canvas.drawLine(color, lineWidth, 'square', x, y, endX, endY)
+    canvas.drawLine(color, barWidth, 'square', x, y, endX, endY)
   }
 
-  const drawCircle = (frequency, radius, bars, colors, barWidth, limit) => {
+  const drawCircle = (frequency, radius, colors, barWidth, limit) => {
     let idx = 0
-
     frequency.forEach((freq, i) => {
-      if (i >= limit * (1 + idx)) {
-        idx++
-      }
-      drawLine({ i, bars, height: freq * mult, radius }, colors[idx], barWidth)
+      if (i >= limit * (1 + idx)) idx++
+      drawLine({ i, height: freq * mult, radius }, colors[idx], barWidth)
     })
   }
 

@@ -2,7 +2,7 @@ import React from 'react'
 import styled from 'styled-components'
 import Search from '../../icons/Search'
 
-function SearchInput() {
+const SearchInput = () => {
   return (
     <StyledSearchInput>
       <input type='text' placeholder='Search...' />
