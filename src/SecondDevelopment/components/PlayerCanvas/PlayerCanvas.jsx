@@ -91,10 +91,9 @@ const rotate = keyframes`
 
 const StyledPlayerCanvas = styled.div`
   background-color: rgba(0, 0, 0, 0.6);
-  position: relative;
   padding: 2rem;
   width: 90%;
-  height: 70%;
+  height: 80%;
   border-radius: 0.5rem;
   /* overflow: hidden; */
 
@@ -102,6 +101,7 @@ const StyledPlayerCanvas = styled.div`
     width: 100% !important;
     height: 100% !important;
     mix-blend-mode: screen;
+    pointer-events: none;
     animation: ${(props) =>
       props.mode === 'circle'
         ? css`
@@ -112,13 +112,23 @@ const StyledPlayerCanvas = styled.div`
 
   .switch-container {
     position: absolute;
-    top: -15%;
+    top: 0;
     right: 0;
     background: rgba(0, 0, 0, 0.5);
     padding: 0.5rem 1.5rem;
     h2 {
+      font-size: 1.8rem;
       color: #fff;
       text-transform: uppercase;
+      text-align: center;
+    }
+  }
+
+  @media only screen and (max-width: 768px) {
+    .switch-container {
+      h2 {
+        font-size: 1.4rem;
+      }
     }
   }
 `
