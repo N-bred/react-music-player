@@ -23,6 +23,7 @@ function PAUSE(state) {
 function SET_VOLUME(state, action) {
   const newState = { ...state }
   newState.audio.volume = action.payload.volume
+  newState._setVolume(action.payload.volume)
   return newState
 }
 

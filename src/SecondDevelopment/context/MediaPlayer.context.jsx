@@ -1,5 +1,6 @@
 import React, { createContext, useReducer, useContext } from 'react'
 import { MEDIA_PLAYER_ACTIONS, MEDIA_PLAYER_REDUCER } from './reducers/mediaPlayer.reducer'
+import useLocalStorage from '../hooks/useLocalStorage'
 
 const MediaPlayerContext = createContext()
 
@@ -18,14 +19,17 @@ const getAudio = () => {
 }
 
 const MediaPlayerProvider = ({ children }) => {
+  const [volume, setVolume] = useLocalStorage('volume', 1)
   // Audio Initalization With AudioContext
   const { audio, analyser, audioCtx } = getAudio()
 
+  audio.volume = Number(volume)
   const [state, dispatch] = useReducer(MEDIA_PLAYER_REDUCER, {
     audio,
     currentTime: 0,
     ended: false,
     started: false,
+    _setVolume: setVolume,
   })
 
   // RESUME CONTEXT EVENT

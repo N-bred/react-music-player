@@ -11,6 +11,7 @@ const MUSIC_LIST_ACTIONS = {
 
 const SET_CURRENT = (state, action) => {
   const song = state.API[action.payload.id]
+  state._setCurrentSong(action.payload.id)
 
   return {
     ...state,
