@@ -19,7 +19,7 @@ const getAudio = () => {
 
 const MediaPlayerProvider = ({ children }) => {
   // Audio Initalization With AudioContext
-  const { audio, analyser, audioCtx, source } = getAudio()
+  const { audio, analyser, audioCtx } = getAudio()
 
   const [state, dispatch] = useReducer(MEDIA_PLAYER_REDUCER, {
     audio,
@@ -46,7 +46,7 @@ const MediaPlayerProvider = ({ children }) => {
     dispatch({ type: MEDIA_PLAYER_ACTIONS.SET_ENDED })
   })
 
-  const value = { state, dispatch, frequency, audio, audioCtx, analyser, source }
+  const value = { state, dispatch, frequency, analyser }
   return <MediaPlayerContext.Provider value={value}>{children}</MediaPlayerContext.Provider>
 }
 

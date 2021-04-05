@@ -1,8 +1,8 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState, useCallback } from 'react'
 import styled, { keyframes, css } from 'styled-components'
 import CanvasLib from './CanvasLib'
 import CanvasDrawVariants from './CanvasDrawVariants'
-import Switch from '../Switch/Switch'
+import SwitchContainer from '../SwitchContainer/SwitchContainer'
 import { ChooseRandomArrayElement } from '../../utils/ChooseRandomArrayElement'
 import { RandomizeArray } from '../../utils/RandomizeArray'
 import { useMusicList } from '../../context/MusicList.context'
@@ -18,10 +18,10 @@ function PlayerCanvas({ bars }) {
   const [drawMode, setDrawMode] = useState('circle')
   const [colors, setColors] = useState({})
 
-  const handleDrawMode = () => {
+  const handleDrawMode = useCallback(() => {
     if (drawMode === 'bars') return setDrawMode('circle')
     if (drawMode === 'circle') return setDrawMode('bars')
-  }
+  }, [drawMode])
 
   useEffect(() => {
     const { width, height } = parentRef.current.getBoundingClientRect()
@@ -65,9 +65,7 @@ function PlayerCanvas({ bars }) {
 
   return (
     <StyledPlayerCanvas ref={parentRef} mode={drawMode}>
-      <div className='switch-container'>
-        <Switch onChange={handleDrawMode} text={drawMode} />
-      </div>
+      <SwitchContainer handleDrawMode={handleDrawMode} drawMode={drawMode} />
 
       <canvas ref={canvasRef} />
     </StyledPlayerCanvas>

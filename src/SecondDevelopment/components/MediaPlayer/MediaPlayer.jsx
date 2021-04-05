@@ -8,7 +8,7 @@ import { useMusicList } from '../../context/MusicList.context'
 import { useMediaPlayer } from '../../context/MediaPlayer.context'
 import { useMediaPlayerListController } from '../../context/MediaPlayerListController'
 
-function MediaPlayer(props) {
+const MediaPlayer = () => {
   const musicList = useMusicList()
   const mediaPlayer = useMediaPlayer()
   const {
@@ -21,7 +21,7 @@ function MediaPlayer(props) {
   } = useMediaPlayerListController()
 
   return (
-    <StyledMediaPlayer {...props}>
+    <StyledMediaPlayer className='media-player'>
       <div className='controls'>
         <div className='controls-bar'>
           <ButtonSvg onClick={handleRandomizeButton} isActive={musicList.state.isRandomized}>

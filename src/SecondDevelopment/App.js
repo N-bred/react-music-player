@@ -17,7 +17,7 @@ function App() {
               <Sidebar className='sidebar' />
               <PlayerScene className='player-scene' />
 
-              <MediaPlayer className='media-player' />
+              <MediaPlayer />
             </Ui>
           </MediaPlayerListControllerProvider>
         </MediaPlayerProvider>
