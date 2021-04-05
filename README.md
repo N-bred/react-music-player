@@ -12,4 +12,8 @@ New feature added, now you can upload your own songs and play them in the app, k
 
 Also, there were a lot of performance fixes and now the app is blazing fast!
 
+### UPDATE: 05/04/2021
+
+After taking a look back at the code i realized that with the new react changes, everything could be changed for the better so i basically re-did the complete app and also added a different visualization mode, now you can choose between seeing bars or seeing a circle.
+
 site: [React Music Player](https://n-bred.github.io/react-music-player/)
